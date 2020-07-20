@@ -5,17 +5,17 @@ name = "EMK theme"
 light = true
 
 # Primary
-primary = "#5B6292"
+primary = "#555B83"
 
 # Menu
-menu_primary = "#5B6292"
+menu_primary = "#555B83"
 menu_text = "rgba(255,255,255,0.6)"
 menu_text_active = "rgba(255,255,255,1)"
-menu_title = "#FDFAF2"
+menu_title = "#FAF7F5"
 
 # Backgrounds
-background = "#FDFAF2"
-home_section_odd = "#FDFAF2"
-home_section_even = "#FDF6E3"
+background = "#FAF7F5"
+home_section_odd = "#FAF7F5"
+home_section_even = "#FAF0E9"
 
 #font = "rose"
