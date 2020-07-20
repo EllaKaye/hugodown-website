@@ -1,6 +1,6 @@
 ---
 # Display name
-name: Nelson Bighetti
+name: Ella Kaye
 
 # Username (this should match the folder name)
 authors:
@@ -10,33 +10,41 @@ authors:
 superuser: true
 
 # Role/position
-role: Professor of Artificial Intelligence
+role: Statistics PhD student and R enthusiast
 
 # Organizations/Affiliations
 organizations:
-- name: Stanford University
-  url: ""
+- name: The University of Warwick
+  url: "https://warwick.ac.uk/fac/sci/statistics/"
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
+# bio: My research interests include Applied Statistics.
 
 interests:
-- Artificial Intelligence
-- Computational Linguistics
-- Information Retrieval
+- Applied Statistics
+- R and \#rstats
 
 education:
   courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
+  - course: PhD in Statistics
+    institution: University of Warwick
+    year: in progress
+  - course: MSc in Applied Statistics
+    institution: University of Oxford
+    year: 2015
+  - course: PGCE in Secondary Mathematics
+    institution: University of Oxford
+    year: 2010
+  - course: MPhil in Mathematics Education
+    institution: University of Cambridge
     year: 2008
-
+  - course: MA in History and Philosophy of Science and Technology
+    institution: University of Toronto
+    year: 2007
+  - course: BA/MA in Mathematics and Philosophy
+    institution: University of Oxford
+    year: 2005
+    
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
@@ -44,16 +52,16 @@ education:
 social:
 - icon: envelope
   icon_pack: fas
-  link: '#contact'  # For a direct email link, use "mailto:test@example.org".
+  link: '#contact'  # For a direct email link, use "mailto:E.Kaye.1@warwick.ac.uk".
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
-- icon: google-scholar
-  icon_pack: ai
-  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+  link: https://twitter.com/ellamkaye
+#- icon: google-scholar
+#  icon_pack: ai
+#  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
 - icon: github
   icon_pack: fab
-  link: https://github.com/gcushen
+  link: https://github.com/EllaKaye
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -70,6 +78,8 @@ user_groups:
 - Visitors
 ---
 
-Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+I am a PhD student in Statistics at the University of Warwick. I am part of the [OxWaSP programme](http://www.oxwasp-cdt.ac.uk). I am interested in Applied Statistics, particularly as applied in the Social Sciences. I am currently working on a project analysing data from applications to undergraduate statistics courses in the Statistics department at Warwick. I am supervised by [Dr Julia Brettschneider](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/brettschneider/) and [Dr Anastasia Papavasiliou](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/papavasiliou/).
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+I am an R enthusiast. I am the author, along with [Prof David Firth](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/) of the `BradleyTerryScalable package`, which is available on [GitHub](https://github.com/EllaKaye/BradleyTerryScalable). I am co-organiser of the [Oxford R User Group](https://www.meetup.com/Oxford-R-User-Group/) and also a member of the [Warwick R User Group](https://www.meetup.com/Warwick-useRs/).
+
+Prior to the PhD, my academic path has taken me from a BA in Mathematics and Philosophy (University of Oxford), through an MA in History and Philosophy of Science and Technology (University of Toronto), an MPhil in Mathematics Education (University of Cambridge) and an MSc in Applied Statistics (University of Oxford). I also have a PGCE in Secondary Mathematics, have taught at secondary school, and worked in market research.
