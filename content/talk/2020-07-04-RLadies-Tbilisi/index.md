@@ -28,7 +28,6 @@ image:
   focal_point: Right
 
 links:
-links:
 - icon: images
   icon_pack: fas
   name: slides
