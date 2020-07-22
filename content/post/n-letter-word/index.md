@@ -58,6 +58,15 @@ So, [here](https://github.com/EllaKaye/EMK) is my personal package, `EMK`. If yo
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>devtools</span>::<span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span>(<span class='s'>"EllaKaye/EMK"</span>)
+<span class='c'>#&gt; </span>
+<span class='c'>#&gt;      checking for file ‘/private/var/folders/n2/y0dp6crn77x9_4fdnfzw52cm0000gn/T/RtmpOeORYa/remotesb49a1e64d0a2/EllaKaye-EMK-1f9be81/DESCRIPTION’ ...  <span style='color: #00BB00;'>✔</span><span>  </span><span style='color: #555555;'>checking for file ‘/private/var/folders/n2/y0dp6crn77x9_4fdnfzw52cm0000gn/T/RtmpOeORYa/remotesb49a1e64d0a2/EllaKaye-EMK-1f9be81/DESCRIPTION’</span><span style='color: #00BBBB;'> (436ms)</span></span>39m
+<span class='c'>#&gt;   <span style='color: #555555;'>─  preparing ‘EMK’:</span></span>9m
+<span class='c'>#&gt;      checking DESCRIPTION meta-information ...  <span style='color: #00BB00;'>✔</span><span>  </span><span style='color: #555555;'>checking DESCRIPTION meta-information</span></span>[39m
+<span class='c'>#&gt;   <span style='color: #555555;'>─  checking for LF line-endings in source and make files and shell scripts</span></span>9m
+<span class='c'>#&gt;   <span style='color: #555555;'>─  checking for empty or unneeded directories</span></span>9m
+<span class='c'>#&gt;   <span style='color: #555555;'>─  building ‘EMK_0.1.0.tar.gz’</span></span>9m
+<span class='c'>#&gt;      </span>  
+<span class='c'>#&gt; </span>
 <span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://github.com/EllaKaye/EMK'>EMK</a></span>)</code></pre>
 
 </div>
