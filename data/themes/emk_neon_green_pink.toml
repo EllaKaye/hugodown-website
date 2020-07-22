@@ -1,0 +1,25 @@
+# Theme metadata
+name = "EMK neon"
+
+# Is theme light or dark?
+light = true
+
+# Primary
+primary = "#EE05F6"
+
+# Menu
+menu_primary = "#0DF605"
+menu_text = "rgba(177,4,183,.8)"
+menu_text_active = "rgba(177,4,183,1)"
+menu_title = "rgba(177,4,183,1)"
+
+# Backgrounds
+background = "#FFFFFF"
+home_section_odd = "#FFFFFF"
+home_section_even = "#EFF6EF"
+
+# Links
+link = "#EE05F6"
+link_hover = "#B104B7"
+
+#font = "rose"
