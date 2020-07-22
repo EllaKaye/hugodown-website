@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: c8f38a07cabe2473
+rmd_hash: 4bf626e92caee588
 
 ---
 
@@ -57,17 +57,7 @@ So, [here](https://github.com/EllaKaye/EMK) is my personal package, `EMK`. If yo
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>devtools</span>::<span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span>(<span class='s'>"EllaKaye/EMK"</span>)
-<span class='c'>#&gt; </span>
-<span class='c'>#&gt;      checking for file ‘/private/var/folders/n2/y0dp6crn77x9_4fdnfzw52cm0000gn/T/RtmpOeORYa/remotesb49a1e64d0a2/EllaKaye-EMK-1f9be81/DESCRIPTION’ ...  <span style='color: #00BB00;'>✔</span><span>  </span><span style='color: #555555;'>checking for file ‘/private/var/folders/n2/y0dp6crn77x9_4fdnfzw52cm0000gn/T/RtmpOeORYa/remotesb49a1e64d0a2/EllaKaye-EMK-1f9be81/DESCRIPTION’</span><span style='color: #00BBBB;'> (436ms)</span></span>39m
-<span class='c'>#&gt;   <span style='color: #555555;'>─  preparing ‘EMK’:</span></span>9m
-<span class='c'>#&gt;      checking DESCRIPTION meta-information ...  <span style='color: #00BB00;'>✔</span><span>  </span><span style='color: #555555;'>checking DESCRIPTION meta-information</span></span>[39m
-<span class='c'>#&gt;   <span style='color: #555555;'>─  checking for LF line-endings in source and make files and shell scripts</span></span>9m
-<span class='c'>#&gt;   <span style='color: #555555;'>─  checking for empty or unneeded directories</span></span>9m
-<span class='c'>#&gt;   <span style='color: #555555;'>─  building ‘EMK_0.1.0.tar.gz’</span></span>9m
-<span class='c'>#&gt;      </span>  
-<span class='c'>#&gt; </span>
-<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://github.com/EllaKaye/EMK'>EMK</a></span>)</code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>devtools</span>::<span class='nf'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span>(<span class='s'>"EllaKaye/EMK"</span>)</code></pre>
 
 </div>
 
@@ -75,12 +65,9 @@ Some examples of `n_letter_words`:
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>2</span>)
-<span class='c'>#&gt; Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.</span>
-<span class='c'>#&gt; Please use `as_tibble()` instead.</span>
-<span class='c'>#&gt; The signature and semantics have changed, see `?as_tibble`.</span>
-<span class='c'>#&gt; <span style='color: #555555;'>This warning is displayed once every 8 hours.</span></span>
-<span class='c'>#&gt; <span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://github.com/EllaKaye/EMK'>EMK</a></span>)
+
+<span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>2</span>)
 <span class='c'>#&gt; <span style='color: #555555;'># A tibble: 676 x 1</span></span>
 <span class='c'>#&gt;    word </span>
 <span class='c'>#&gt;    <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span></span>
@@ -96,9 +83,12 @@ Some examples of `n_letter_words`:
 <span class='c'>#&gt; <span style='color: #555555;'>10</span><span> JA   </span></span>
 <span class='c'>#&gt; <span style='color: #555555;'># … with 666 more rows</span></span>
 
-<span class='k'>some_three_letter_words</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>3</span>, num_letters = <span class='m'>10</span>, case = <span class='s'>"lower"</span>, as_vector = <span class='kc'>TRUE</span>)
+<span class='k'>some_three_letter_words</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>3</span>, num_letters = <span class='m'>10</span>, 
+                                          case = <span class='s'>"lower"</span>, as_vector = <span class='kc'>TRUE</span>)
+
 <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='k'>some_three_letter_words</span>), <span class='nf'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='k'>some_three_letter_words</span>))
 <span class='c'>#&gt;  [1] "aaa" "baa" "caa" "daa" "eaa" "faa" "ejj" "fjj" "gjj" "hjj" "ijj" "jjj"</span>
+
 <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>some_three_letter_words</span>)
 <span class='c'>#&gt; [1] 1000</span></code></pre>
 

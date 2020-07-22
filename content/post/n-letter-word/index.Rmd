@@ -50,18 +50,22 @@ Now that I had my function, what to do with it? I remembered articles I'd read a
 
 So, [here](https://github.com/EllaKaye/EMK) is my personal package, `EMK`. If you think that `n_letter_words` might be of use to you, then feel free to install!
 
-```{r message=FALSE}
+```{r message=FALSE, eval = FALSE}
 devtools::install_github("EllaKaye/EMK")
-library(EMK)
 ```
 
 Some examples of `n_letter_words`:
 
-```{r}
+```{r warning = FALSE, message = FALSE}
+library(EMK)
+
 n_letter_words(2)
 
-some_three_letter_words <- n_letter_words(3, num_letters = 10, case = "lower", as_vector = TRUE)
+some_three_letter_words <- n_letter_words(3, num_letters = 10, 
+                                          case = "lower", as_vector = TRUE)
+
 c(head(some_three_letter_words), tail(some_three_letter_words))
+
 length(some_three_letter_words)
 ```
 
