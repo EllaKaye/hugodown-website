@@ -9,9 +9,9 @@ primary = "#DB116A"
 
 # Menu
 menu_primary = "#11DB82"
-menu_text = "#DB116A"
-menu_text_active = "#B9115B"
-menu_title = "#DB116A"
+menu_text = "#000000"
+menu_text_active = "#DB116A"
+menu_title = "#000000"
 
 # Backgrounds
 background = "#F9FFFD"
