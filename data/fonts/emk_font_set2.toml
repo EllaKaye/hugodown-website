@@ -2,10 +2,12 @@
 name = "EMK font set"
 
 # Optional Google font URL
-google_fonts = "family=Fira+Code&family=Libre+Caslon+Text&family=Source+Sans+Pro:wght@200;300;600"
+google_fonts = "Fira+Code|Libre+Caslon+Text|Source+Sans+Pro"
 
 # Font families
 heading_font = "Source"
-body_font = "Libra Caslon Text"
+body_font = "Libre Caslon Text"
 nav_font = "Source"
 mono_font = "Fira Code"
+
+

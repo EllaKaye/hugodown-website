@@ -2,7 +2,7 @@
 name = "EMK font set"
 
 # Optional Google font URL
-google_fonts = "Fira+Code&family=Fira+Sans:wght@200;300;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@200;300;600"
+google_fonts = "Fira+Code|Fira+Sans:200;300;600|Source+Code+Pro|Source+Sans+Pro:200;300;600"
 
 # Font families
 heading_font = "Source"
