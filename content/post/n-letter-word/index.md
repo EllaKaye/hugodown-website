@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 4bf626e92caee588
+rmd_hash: 7b72f5c5cf551e08
 
 ---
 
@@ -84,7 +84,8 @@ Some examples of `n_letter_words`:
 <span class='c'>#&gt; <span style='color: #555555;'># … with 666 more rows</span></span>
 
 <span class='k'>some_three_letter_words</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>3</span>, num_letters = <span class='m'>10</span>, 
-                                          case = <span class='s'>"lower"</span>, as_vector = <span class='kc'>TRUE</span>)
+                                          case = <span class='s'>"lower"</span>, 
+                                          as_vector = <span class='kc'>TRUE</span>)
 
 <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='k'>some_three_letter_words</span>), <span class='nf'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='k'>some_three_letter_words</span>))
 <span class='c'>#&gt;  [1] "aaa" "baa" "caa" "daa" "eaa" "faa" "ejj" "fjj" "gjj" "hjj" "ijj" "jjj"</span>
