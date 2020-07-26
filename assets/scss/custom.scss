@@ -18,3 +18,13 @@ pre code {
   overflow-x: auto;
 }
 
+h1, h2, h3 {
+  text-transform: uppercase;
+}
+
+#about .portrait-title h3 {
+  font-family: "Raleway";
+  margin-top: 10px;
+  font-size: 0.75rem;
+}
+
