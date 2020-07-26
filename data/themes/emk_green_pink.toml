@@ -18,6 +18,8 @@ background = "#F9FFFD"
 home_section_odd = "#F9FFFD"
 home_section_even = "#EFFFF8"
 
+dark_background = "#073642"
+
 # Links
 link = "#DB116A"
 link_hover = "#B9115B"
