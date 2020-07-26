@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Statistics PhD student and R enthusiast
+role: Statistics PhD and R enthusiast
 
 # Organizations/Affiliations
 organizations:
