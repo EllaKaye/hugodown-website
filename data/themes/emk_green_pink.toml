@@ -5,23 +5,23 @@ name = "EMK theme"
 light = true
 
 # Primary
-primary = "#DB116A"
+primary = "#D40067"
 
 # Menu
-menu_primary = "#11DB82"
+menu_primary = "#FFFFFF"
 menu_text = "#000000"
-menu_text_active = "#DB116A"
+menu_text_active = "#D40067"
 menu_title = "#000000"
 
 # Backgrounds
 background = "#FFFFFF"
-home_section_odd = "#F9FFFD"
-home_section_even = "#EFFFF8"
+home_section_odd = "#FFFFFF"
+home_section_even = "#F9FFFD"
 
 dark_background = "#073642"
 
 # Links
-link = "#DB116A"
-link_hover = "#B9115B"
+link = "#D40067"
+link_hover = "#D40067"
 
 #font = "rose"
