@@ -5,9 +5,11 @@ code {
   background-color: #FDF6E3; /* changes the colour directly behind the text. */
 }
 
+/* Background colour of code block is controled by /* .chroma { color: #586e75; background-color: #FDF6E3 } in static/highlight-light.css*/
+
 pre {
   margin: 0 0 1rem 0;
-  background-color: #657B83; /* Match default highlight theme. CAN'T FIGURE OUT WHAT THIS CHANGES*/
+  background-color: #FDF6E3; /* Match default highlight theme. CAN'T FIGURE OUT WHAT THIS CHANGES*/
   border: 15px;
   font-size: 0.75rem;
   border-radius: 12px;
