@@ -2,12 +2,12 @@ pre,
 code {
   font-family: $sta-font-mono, monospace;
   color: #268BD2;
-  background-color: #FDF6E3;
+  background-color: #FDF6E3; /* changes the colour directly behind the text. */
 }
 
 pre {
   margin: 0 0 1rem 0;
-  background-color: #FDF6E3; /* Match default highlight theme. */
+  background-color: #657B83; /* Match default highlight theme. CAN'T FIGURE OUT WHAT THIS CHANGES*/
   border: 15px;
   font-size: 0.75rem;
   border-radius: 12px;
