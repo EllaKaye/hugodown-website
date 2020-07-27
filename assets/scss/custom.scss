@@ -2,7 +2,7 @@ pre,
 code {
   font-family: $sta-font-mono, monospace;
   color: #268BD2;
-  background-color: #FDF6E3; /* changes the colour directly behind the text. */
+  background-color: transparent; /* changes the colour directly behind the text. If not specified here it defaults to red*/
 }
 
 /* Background colour of code block is controled by /* .chroma { color: #586e75; background-color: #FDF6E3 } in static/highlight-light.css*/
