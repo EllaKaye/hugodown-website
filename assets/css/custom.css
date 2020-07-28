@@ -1,0 +1,3 @@
+/*Trying to figure out how to override some elements of the highlight-light.css */
+/*This doesn't have the effect I was hoping, i.e. nothing visible */
+/* Background */ .chroma { color: #586e75; background-color: #657B83 }
