@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: bf9e55b0a7446248
+rmd_hash: 753e25d4e25fdfba
 
 ---
 
@@ -80,9 +80,9 @@ Testing using custom fonts with `ragg`
 
 </div>
 
-<div class="note">
+<div class="alert-warning">
 
--   Using a Google Font NOT decalred in `emk_font_set2` does not work.
+-   Using a Google Font NOT declared in `emk_font_set2` does not work.
 -   Also, using a .otf font in Font Book doesn't work.
 -   Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set.
 

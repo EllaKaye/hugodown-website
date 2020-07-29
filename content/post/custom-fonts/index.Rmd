@@ -62,8 +62,8 @@ ggplot(diamonds) +
   theme(text = element_text(family = "FiraCode-Light", size = 10))
 ```
 
-:::note
-- Using a Google Font NOT decalred in `emk_font_set2` does not work.
+:::alert-warning
+- Using a Google Font NOT declared in `emk_font_set2` does not work.
 - Also, using a .otf font in Font Book doesn't work.
 - Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set.
 :::
