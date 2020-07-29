@@ -68,20 +68,20 @@ Some examples of `n_letter_words`:
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://github.com/EllaKaye/EMK'>EMK</a></span>)
 
 <span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>2</span>)
-<span class='c'>#&gt; <span style='color: #990000;'># A tibble: 676 x 1</span></span>
+<span class='c'>#&gt; <span style='color: #555555;'># A tibble: 676 x 1</span></span>
 <span class='c'>#&gt;    word </span>
-<span class='c'>#&gt;    <span style='color: #990000;font-style: italic;'>&lt;chr&gt;</span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 1</span><span> AA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 2</span><span> BA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 3</span><span> CA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 4</span><span> DA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 5</span><span> EA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 6</span><span> FA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 7</span><span> GA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 8</span><span> HA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'> 9</span><span> IA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'>10</span><span> JA   </span></span>
-<span class='c'>#&gt; <span style='color: #990000;'># … with 666 more rows</span></span>
+<span class='c'>#&gt;    <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 1</span><span> AA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 2</span><span> BA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 3</span><span> CA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 4</span><span> DA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 5</span><span> EA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 6</span><span> FA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 7</span><span> GA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 8</span><span> HA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'> 9</span><span> IA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>10</span><span> JA   </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'># … with 666 more rows</span></span>
 
 <span class='k'>some_three_letter_words</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/pkg/EMK/man/n_letter_words.html'>n_letter_words</a></span>(<span class='m'>3</span>, num_letters = <span class='m'>10</span>, 
                                           case = <span class='s'>"lower"</span>, 
