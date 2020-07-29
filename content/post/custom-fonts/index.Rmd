@@ -1,0 +1,71 @@
+---
+output: hugodown::md_document
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "Testing custom fonts in plots"
+subtitle: ""
+summary: "Playing around with `ragg`"
+authors: []
+tags: []
+categories: []
+date: 2020-07-29
+lastmod: 2020-07-29
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+---
+
+## Testing using custom fonts with `ragg`
+
+```{r}
+library(ggplot2)
+library(ragg)
+```
+
+### Using a font saved on my computer as .ttf
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Neutraface Slab Display TT Bold", size = 20))
+```
+### Using a Google Font declared in `emk_font_set2`
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Fira Code", size = 20))
+```
+
+### Using a variation of a Google Font saved in Font Book
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "FiraCode-Light", size = 10))
+```
+
+:::note
+- Using a Google Font NOT decalred in `emk_font_set2` does not work.
+- Also, using a .otf font in Font Book doesn't work.
+- Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set.
+:::
+
+
