@@ -27,17 +27,15 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: af84066a64aa0f14
+rmd_hash: c7ab6e57dbaf60f5
 
 ---
 
-Testing using custom fonts with `ragg`
---------------------------------------
+Testing using custom fonts with `ragg` and `systemfonts` (although don't seem to need to have either library loaded!)
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
-<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://ragg.r-lib.org'>ragg</a></span>)</code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)</code></pre>
 
 </div>
 
@@ -80,5 +78,5 @@ Testing using custom fonts with `ragg`
 
 </div>
 
-{{% alert note %}} Using a Google Font NOT declared in `emk_font_set2` does not work. {{% /alert %}} {{% alert note %}} Also, using a .otf font in Font Book doesn't work. {{% /alert %}} {{% alert note %}} Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set. {{% /alert %}}
+{{% alert note %}} Using a Google Font NOT declared in `emk_font_set2` does not work. {{% /alert %}} {{% alert note %}} Also, using a .otf font in Font Book doesn't work. {{% /alert %}} {{% alert note %}} Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set. {{% /alert %}} {{% alert warning %}} After adding a font to Font Book, might need to restart computer before it works in plots {{% /alert %}}
 

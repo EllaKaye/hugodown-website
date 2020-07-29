@@ -29,11 +29,10 @@ image:
 projects: []
 ---
 
-## Testing using custom fonts with `ragg`
+Testing using custom fonts with `ragg` and `systemfonts` (although don't seem to need to have either library loaded!)
 
 ```{r}
 library(ggplot2)
-library(ragg)
 ```
 
 ### Using a font saved on my computer as .ttf
@@ -70,6 +69,9 @@ Also, using a .otf font in Font Book doesn't work.
 {{% /alert %}}
 {{% alert note %}}
 Also, using adding `face = "italic"` to `element_text` doesn't work if italic option not specified in font set.
+{{% /alert %}}
+{{% alert warning %}}
+After adding a font to Font Book, might need to restart computer before it works in plots
 {{% /alert %}}
 
 
