@@ -11,7 +11,7 @@ categories: []
 date: 2020-07-29
 lastmod: 2020-07-29
 featured: false
-draft: false
+draft: true
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
@@ -43,26 +43,152 @@ ggplot(diamonds) +
   ggtitle("A fancy font") + 
   theme(text = element_text(family = "Neutraface Slab Display TT Bold", size = 20))
 ```
+
 ### Using a Google Font declared in `emk_font_set2`
 
+```{r eval = FALSE}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Raleway", size = 20))
+```
+
+### Using a Google Font saved in Font Book
+
 ```{r}
 ggplot(diamonds) + 
   geom_bar(aes(color, fill = color)) + 
   ggtitle("A fancy font") + 
-  theme(text = element_text(family = "Fira Code", size = 20))
+  theme(text = element_text(family = "Mulish", size = 20))
 ```
 
-### Using a variation of a Google Font saved in Font Book
+### Using a Google Font with `showtext`
+
+### Using a .ttf font with `cairo`
 
 ```{r}
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Mulish", size = 20))
+
+ggsave("Mulish-title.pdf", device = cairo_pdf)
+```
+
+### Using a .oft font with `cairo`
+This also works
+
+```{r}
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 20))
+
+ggsave("Museo-title.pdf", device = cairo_pdf)
+```
+
+### Using a .otf with `ragg`
+
+```{r eval = FALSE}
+quartz()
 ggplot(diamonds) + 
   geom_bar(aes(color, fill = color)) + 
   ggtitle("A fancy font") + 
-  theme(text = element_text(family = "FiraCode-Light", size = 10))
+  theme(text = element_text(family = "Museo", size = 20))
 ```
+
+
+Also works
+
+```{r}
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 20))
+
+ggsave("Museo-title.png", type = "cairo")
+```
+
+### Using a computer .otf font with `showtext`
+
+```{r}
+library(showtext)
+```
+
+Does not work:
+```{r eval = FALSE}
+showtext_auto()
+
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 20))
+```
+
+Not sure what counts as value for `regular`
+```{r eval = FALSE}
+font_add("Museo", regular = "Museo")
+showtext_auto()
+
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 20))
+```
+```{r}
+library(dplyr)
+library(stringr)
+systemfonts::system_fonts() %>%
+  filter(str_detect(path, "Museo"))
+```
+
+
+```{r eval = FALSE}
+font_add("Museo", regular = "/Users/ellakaye/Library/Fonts/exljbris - Museo-500")
+showtext_auto()
+
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 20))
+```
+
+```{r, eval = FALSE}
+font_add_google("Cinzel", "Cinzel")
+showtext_auto()
+
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Cinzel", size = 20))
+```
+
+
+
+### From Andrew's blog
+Need to have font family installed on computer
+
+```{r eval = FALSE}
+ggplot(mpg, aes(x = cyl, y = hwy)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  annotate("text", x = 5, y = 35, label = "There aren't a lot of\n5 cylinder cars",
+           family = "Source Sans Pro Semibold", color = "#DC5B44", size = 4) +
+  labs(title = "Highway miles per gallon and cylinders",
+       subtitle = "This is an interesting relationship, I guess",
+       caption = "Source: ggplot's built-in data",
+       x = "Cylinders", y = "Highway miles per gallon") +
+  theme_light(base_family = "Source Sans Pro") +
+  theme(plot.caption = element_text(family = "Source Sans Pro ExtraLight"))
+```
+
+
+
+
+
 
 {{% alert note %}}
-Using a Google Font NOT declared in `emk_font_set2` does not work.
+Using theme fonts does NOT work.
 {{% /alert %}}
 {{% alert note %}}
 Also, using a .otf font in Font Book doesn't work.
