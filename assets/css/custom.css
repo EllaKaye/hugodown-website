@@ -3,6 +3,6 @@
 /* Background */ .chroma { color: #586e75; background-color: #657B83 }
 
 @font-face {
-    font-family: 'LEMONMILK-Regular';
+    font-family: LEMONMILK-Regular;
     src: local('LEMONMILK-Regular'), url("fonts/LEMONMILK-Regular.otf") format("opentype");
 }
