@@ -2,7 +2,7 @@
 name = "EMK font set"
 
 # Optional Google font URL
-google_fonts = "Fira+Code|Libre+Caslon+Text|Source+Sans+Pro|Josefin+Slab:300,400,600,700|Raleway:300,400,500,600"
+google_fonts = "Fira+Code|Poppins|Libre+Caslon+Text|Source+Sans+Pro|Josefin+Slab:300,400,600,700|Raleway:300,400,500,600"
 
 # Font families
 heading_font = "Lemon Milk"

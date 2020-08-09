@@ -1,3 +1,30 @@
+@font-face {
+  font-family: 'Lemon Milk';
+  src: local('lemonmilk_regular'), url('fonts/lemonmilk_regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_regular.ttf') format('truetype'); /* Safari, Android, iOS */
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lemon Milk Bold';
+  src: local('lemonmilk_bold'), url('fonts/lemonmilk_bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_bold.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_bold.ttf') format('truetype'); /* Safari, Android, iOS */
+   font-weight: 900;
+   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lemon Milk Light';
+  src: local('lemonmilk_light'), url('fonts/lemonmilk_light.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_light.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_light.ttf') format('truetype'); /* Safari, Android, iOS */
+  font-weight: 300;
+  font-style: normal;
+}
+
 pre,
 code {
   font-family: $sta-font-mono, monospace;
@@ -22,6 +49,7 @@ pre code {
 }
 
 h1, h2, h3 {
+  font-family: "Lemon Milk", "Poppins", sans-serif;
   text-transform: uppercase;
 }
 
@@ -80,31 +108,4 @@ h1, h2, h3 {
 }
 
 */
-
-@font-face {
-  font-family: 'Lemon Milk';
-  src: local('lemonmilk_regular'), url('fonts/lemonmilk_regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('fonts/lemonmilk_regular.woff') format('woff'), /* Pretty Modern Browsers */
-       url('fonts/lemonmilk_regular.ttf') format('truetype'); /* Safari, Android, iOS */
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lemon Milk Bold';
-  src: local('lemonmilk_bold'), url('fonts/lemonmilk_bold.woff2') format('woff2'), /* Super Modern Browsers */
-       url('fonts/lemonmilk_bold.woff') format('woff'), /* Pretty Modern Browsers */
-       url('fonts/lemonmilk_bold.ttf') format('truetype'); /* Safari, Android, iOS */
-   font-weight: 900;
-   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lemon Milk Light';
-  src: local('lemonmilk_light'), url('fonts/lemonmilk_light.woff2') format('woff2'), /* Super Modern Browsers */
-       url('fonts/lemonmilk_light.woff') format('woff'), /* Pretty Modern Browsers */
-       url('fonts/lemonmilk_light.ttf') format('truetype'); /* Safari, Android, iOS */
-  font-weight: 300;
-  font-style: normal;
-}
 
