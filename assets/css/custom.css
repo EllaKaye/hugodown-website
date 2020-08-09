@@ -21,12 +21,12 @@
   src: url('fonts/lemonmilk_regular.woff2') format('woff2'), /* Super Modern Browsers */
        url('fonts/lemonmilk_regular.woff') format('woff'), /* Pretty Modern Browsers */
        url('fonts/lemonmilk_regular.ttf') format('truetype'); /* Safari, Android, iOS */
-   font-weight: 500;
-   font-style: normal;
+  font-weight: 500;
+  font-style: normal;
 }
 
 @font-face {
-   font-family: 'Lemon Milk';
+  font-family: 'Lemon Milk';
   src: url('fonts/lemonmilk_bold.woff2') format('woff2'), /* Super Modern Browsers */
        url('fonts/lemonmilk_bold.woff') format('woff'), /* Pretty Modern Browsers */
        url('fonts/lemonmilk_bold.ttf') format('truetype'); /* Safari, Android, iOS */
@@ -35,11 +35,11 @@
 }
 
 @font-face {
-   font-family: 'Lemon Milk';
+  font-family: 'Lemon Milk';
   src: url('fonts/lemonmilk_light.woff2') format('woff2'), /* Super Modern Browsers */
        url('fonts/lemonmilk_light.woff') format('woff'), /* Pretty Modern Browsers */
        url('fonts/lemonmilk_light.ttf') format('truetype'); /* Safari, Android, iOS */
-   font-weight: 300;
-   font-style: normal;
+  font-weight: 300;
+  font-style: normal;
 }
 
