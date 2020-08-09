@@ -2,6 +2,8 @@
 /*This doesn't have the effect I was hoping, i.e. nothing visible */
 /* Background */ .chroma { color: #586e75; background-color: #657B83 }
 
+/*
+
 @font-face {
     font-family: 'LEMON/MILK';
     src: local('LEMONMILK-Regular'), url("fonts/LEMONMILK-Regular.otf") format("opentype");
@@ -10,4 +12,27 @@
 @font-face {
     font-family: 'Museo Slab';
     src: local('MuseoSlab-500'), url("fonts/MuseoSlab-500.otf") format("opentype");
+}
+
+*/
+
+@font-face {
+   font-family: 'Lemon Milk';
+   src: local('Lemon Milk') url('fonts/lemonmilk-webfont.woff2') format('woff2'),
+      local('Lemon Milk') url('fonts/lemonmilk-webfont.woff') format('woff');
+   font-weight: 500;
+}
+@font-face {
+   font-family: 'Lemon Milk';
+   src: local('Lemon Milk') url('fonts/lemonmilkbold-webfont.woff2') format('woff2'),
+      local('Lemon Milk') url('fonts/lemonmilkbold-webfont.woff') format('woff');
+   font-weight: 900;
+   font-style: normal;
+}
+@font-face {
+   font-family: 'Lemon Milk';
+   src: local('Lemon Milk') url('fonts/lemonmilklight-webfont.woff2') format('woff2'),
+        local('Lemon Milk') url('fonts/lemonmilklight-webfont.woff') format('woff');
+   font-weight: 300;
+   font-style: normal;
 }
