@@ -62,3 +62,49 @@ h1, h2, h3 {
     background-color: #bed3ec;
     border: solid 5px #dfedff;
   }
+
+/*Trying to figure out how to override some elements of the highlight-light.css */
+/*This doesn't have the effect I was hoping, i.e. nothing visible */
+/* Background */ .chroma { color: #586e75; background-color: #657B83 }
+
+/*
+
+@font-face {
+    font-family: 'LEMON/MILK';
+    src: local('LEMONMILK-Regular'), url("fonts/LEMONMILK-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: 'Museo Slab';
+    src: local('MuseoSlab-500'), url("fonts/MuseoSlab-500.otf") format("opentype");
+}
+
+*/
+
+@font-face {
+  font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_regular.ttf') format('truetype'); /* Safari, Android, iOS */
+   font-weight: 500;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_bold.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_bold.ttf') format('truetype'); /* Safari, Android, iOS */
+   font-weight: 900;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_light.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_light.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_light.ttf') format('truetype'); /* Safari, Android, iOS */
+   font-weight: 300;
+   font-style: normal;
+}
+

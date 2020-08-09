@@ -17,26 +17,29 @@
 */
 
 @font-face {
-   font-family: Lemon Milk;
-   src: local('Lemon Milk'), local('lemonmilk-webfont') url('fonts/lemonmilk-webfont.woff2') format('woff2'),
-      local('Lemon Milk'), local('lemonmilk-webfont') url('fonts/lemonmilk-webfont.woff') format('woff'),
-      local('Lemon Milk'), local('lemonmilk_regular') url('fonts/lemonmilk_regular.ttf') format('truetype');
+  font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_regular.ttf') format('truetype'); /* Safari, Android, iOS */
    font-weight: 500;
    font-style: normal;
 }
+
 @font-face {
-   font-family: Lemon Milk;
-   src: local('Lemon Milk Bold'), local('lemonmilkbold-webfont') url('fonts/lemonmilkbold-webfont.woff2') format('woff2'),
-      local('Lemon Milk Bold'), local('lemonmilkbold-webfont') url('fonts/lemonmilkbold-webfont.woff') format('woff'),
-      local('Lemon Milk Bold'), local('lemonmilk_bold') url('fonts/lemonmilk_bold.ttf') format('truetype');
+   font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_bold.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_bold.ttf') format('truetype'); /* Safari, Android, iOS */
    font-weight: 900;
    font-style: normal;
 }
+
 @font-face {
-   font-family: Lemon Milk;
-   src: local('Lemon Milk Light'), local('lemonmilklight-webfont') url('fonts/lemonmilklight-webfont.woff2') format('woff2'),
-        local('Lemon Milk Light'), local('lemonmilklight-webfont') url('fonts/lemonmilklight-webfont.woff') format('woff'),
-        local('Lemon Milk Light'), local('lemonmilk_light') url('fonts/lemonmilk_light.ttf') format('truetype');
+   font-family: 'Lemon Milk';
+  src: url('fonts/lemonmilk_light.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/lemonmilk_light.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/lemonmilk_light.ttf') format('truetype'); /* Safari, Android, iOS */
    font-weight: 300;
    font-style: normal;
 }
+
