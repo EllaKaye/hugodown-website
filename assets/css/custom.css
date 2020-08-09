@@ -17,26 +17,26 @@
 */
 
 @font-face {
-   font-family: 'Lemon Milk';
-   src: local('Lemon Milk') url('fonts/lemonmilk-webfont.woff2') format('woff2'),
-      local('Lemon Milk') url('fonts/lemonmilk-webfont.woff') format('woff'),
-      local('Lemon Milk') url('fonts/lemonmilk_regular.ttf') format('truetype');
+   font-family: Lemon Milk;
+   src: local('lemonmilk-webfont') url('fonts/lemonmilk-webfont.woff2') format('woff2'),
+      local('lemonmilk-webfont') url('fonts/lemonmilk-webfont.woff') format('woff'),
+      local('lemonmilk_regular') url('fonts/lemonmilk_regular.ttf') format('truetype');
    font-weight: 500;
    font-style: normal;
 }
 @font-face {
-   font-family: 'Lemon Milk';
-   src: local('Lemon Milk') url('fonts/lemonmilkbold-webfont.woff2') format('woff2'),
-      local('Lemon Milk') url('fonts/lemonmilkbold-webfont.woff') format('woff'),
-      local('Lemon Milk') url('fonts/lemonmilk_bold.ttf') format('truetype');
+   font-family: Lemon Milk;
+   src: local('lemonmilkbold-webfont') url('fonts/lemonmilkbold-webfont.woff2') format('woff2'),
+      local('lemonmilkbold-webfont') url('fonts/lemonmilkbold-webfont.woff') format('woff'),
+      local('lemonmilk_bold') url('fonts/lemonmilk_bold.ttf') format('truetype');
    font-weight: 900;
    font-style: normal;
 }
 @font-face {
-   font-family: 'Lemon Milk';
-   src: local('Lemon Milk') url('fonts/lemonmilklight-webfont.woff2') format('woff2'),
-        local('Lemon Milk') url('fonts/lemonmilklight-webfont.woff') format('woff'),
-        local('Lemon Milk') url('fonts/lemonmilk_light.ttf') format('truetype');
+   font-family: Lemon Milk;
+   src: local('lemonmilklight-webfont') url('fonts/lemonmilklight-webfont.woff2') format('woff2'),
+        local('lemonmilklight-webfont') url('fonts/lemonmilklight-webfont.woff') format('woff'),
+        local('lemonmilk_light') url('fonts/lemonmilk_light.ttf') format('truetype');
    font-weight: 300;
    font-style: normal;
 }
