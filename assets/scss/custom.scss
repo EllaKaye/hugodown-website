@@ -29,7 +29,8 @@ pre,
 code {
   font-family: $sta-font-mono, monospace;
   color: #268BD2;
-  background-color: transparent; /* changes the colour directly behind the text. If not specified here it defaults to red*/
+  /* background-color: #FDF6E3; */
+  background-color: transparent;  /* changes the colour directly behind the text. If not specified here it defaults to red*/
 }
 
 /* Background colour of code block is controled by /* .chroma { color: #586e75; background-color: #FDF6E3 } in static/highlight-light.css*/
@@ -49,12 +50,16 @@ pre code {
 }
 
 h1, h2, h3 {
-  font-family: "Lemon Milk", "Raleway", sans-serif;
+  font-family: "LEMONMILK-Medium", "Raleway", sans-serif;
   text-transform: uppercase;
 }
 
+p, .media-body, .btn, a, li, ul {
+  font-family: "LEMONMILKPro-UltraLight", "Raleway", sans-serif;
+}
+
 #about .portrait-title h3 {
-  font-family: "Raleway";
+  font-family: "LEMONMILKPro-UltraLight", "Raleway";
   margin-top: 10px;
   font-size: 0.75rem;
 }
@@ -65,13 +70,23 @@ h1, h2, h3 {
 /* this is the part that takes out the shadow & the only edit */
   box-shadow: none;
   font-size: 18px;
-  font-weight: 900 !important;
+  text-transform: uppercase;
+  font-family: "LEMONMILKPro-Medium", "Raleway", sans-serif;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 1030;
   padding: 0 1rem;
+}
+
+.navbar-brand {
+  // Set v-padding to 5px to align with 50/70px responsive max navbar heights.
+  padding-top: 5px;
+  font-family: "LEMONMILKPro-Medium", "Raleway", sans-serif;
+  padding-bottom: 5px;
+  position: relative;
+  z-index: 1030;  // For z-index clickable mobile logo.
 }
 
 /*Trying to figure out how to override some elements of the highlight-light.css */
