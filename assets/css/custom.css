@@ -1,4 +1,4 @@
-/* @import must be at top of file, otherwise CSS will not work */
+/* @import must be at top of file, otherwise CSS will not work
 @import url("//hello.myfonts.net/count/3c07c5");
 
 @font-face {
@@ -22,7 +22,7 @@
 
 /*Trying to figure out how to override some elements of the highlight-light.css */
 /*This doesn't have the effect I was hoping, i.e. nothing visible */
-/* Background */ .chroma { color: #586e75; background-color: #657B83 }
+/* Background  .chroma { color: #586e75; background-color: #657B83 }
 
 /*
 
