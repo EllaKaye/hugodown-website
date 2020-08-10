@@ -1,13 +1,9 @@
 /* @import must be at top of file, otherwise CSS will not work */
-@import url("//hello.myfonts.net/count/3c062d");
+@import url("//hello.myfonts.net/count/3c07c5");
 
 @font-face {
   font-family: 'LEMONMILKPro-Medium';
   src: url('fonts/LEMONMILKPro-Medium.woff2') format('woff2'), url('fonts/LEMONMILKPro-Medium.woff') format('woff');
-}
-@font-face {
-  font-family: 'LEMONMILKPro-SemiBold';
-  src: url('fonts/LEMONMILKPro-SemiBold.woff2') format('woff2'), url('fonts/LEMONMILKPro-SemiBold.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-Regular';
