@@ -3,19 +3,19 @@
 
 @font-face {
   font-family: 'LEMONMILKPro-Medium';
-  src: url('fonts/LEMONMILKPro-Medium.woff2') format('woff2'), url('fonts/LEMONMILKPro-Medium.woff') format('woff');
+  src: local('LEMONMILKPro-Medium'), url('fonts/LEMONMILKPro-Medium.woff2') format('woff2'), url('fonts/LEMONMILKPro-Medium.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-Regular';
-  src: url('fonts/LEMONMILKPro-Regular.woff2') format('woff2'), url('fonts/LEMONMILKPro-Regular.woff') format('woff');
+  src: local('LEMONMILKPro-Regular'), url('fonts/LEMONMILKPro-Regular.woff2') format('woff2'), url('fonts/LEMONMILKPro-Regular.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-Light';
-  src: url('fonts/LEMONMILKPro-Light.woff2') format('woff2'), url('fonts/LEMONMILKPro-Light.woff') format('woff');
+  src: local('LEMONMILKPro-Light'), url('fonts/LEMONMILKPro-Light.woff2') format('woff2'), url('fonts/LEMONMILKPro-Light.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-UltraLight';
-  src: url('fonts/LEMONMILKPro-UltraLight.woff2') format('woff2'), url('fonts/LEMONMILKPro-UltraLight.woff') format('woff');
+  src: local('LEMONMILKPro-UltraLight'), url('fonts/LEMONMILKPro-UltraLight.woff2') format('woff2'), url('fonts/LEMONMILKPro-UltraLight.woff') format('woff');
 }
 
 pre,
