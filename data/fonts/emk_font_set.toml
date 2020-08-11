@@ -5,7 +5,7 @@ name = "EMK font set"
 google_fonts = "Fira+Code|Poppins|Libre+Caslon+Text|Source+Sans+Pro|Josefin+Slab:300,400,600,700|Raleway:300,400,500,600"
 
 # Font families
-heading_font = "LEMONMILKPro-Medium"
-body_font = "Raleway"
-nav_font = "Raleway"
+heading_font = "LEMONMILKPro-Regular"
+body_font = "LEMONMILKPro-UltraLight"
+nav_font = "LEMONMILKPro-UltraLight"
 mono_font = "Fira Code"

@@ -1,28 +1,107 @@
-/* @import must be at top of file, otherwise CSS will not work
+/* @import must be at top of file, otherwise CSS will not work */
 @import url("//hello.myfonts.net/count/3c07c5");
 
 @font-face {
   font-family: 'LEMONMILKPro-Medium';
-  src: url('fonts/LEMONMILKPro-Medium.woff2') format('woff2'), url('fonts/LEMONMILKPro-Medium.woff') format('woff');
+  src: local('LEMONMILKPro-Medium'), url('fonts/LEMONMILKPro-Medium.woff2') format('woff2'), url('fonts/LEMONMILKPro-Medium.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-Regular';
-  src: url('fonts/LEMONMILKPro-Regular.woff2') format('woff2'), url('fonts/LEMONMILKPro-Regular.woff') format('woff');
+  src: local('LEMONMILKPro-Regular'), url('fonts/LEMONMILKPro-Regular.woff2') format('woff2'), url('fonts/LEMONMILKPro-Regular.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-Light';
-  src: url('fonts/LEMONMILKPro-Light.woff2') format('woff2'), url('fonts/LEMONMILKPro-Light.woff') format('woff');
+  src: local('LEMONMILKPro-Light'), url('fonts/LEMONMILKPro-Light.woff2') format('woff2'), url('fonts/LEMONMILKPro-Light.woff') format('woff');
 }
 @font-face {
   font-family: 'LEMONMILKPro-UltraLight';
-  src: url('fonts/LEMONMILKPro-UltraLight.woff2') format('woff2'), url('fonts/LEMONMILKPro-UltraLight.woff') format('woff');
+  src: local('LEMONMILKPro-UltraLight'), url('fonts/LEMONMILKPro-UltraLight.woff2') format('woff2'), url('fonts/LEMONMILKPro-UltraLight.woff') format('woff');
 }
 
+pre,
+code {
+  font-family: $sta-font-mono, monospace;
+  color: #268BD2;
+  /* background-color: #FDF6E3; */
+  background-color: transparent;  /* changes the colour directly behind the text. If not specified here it defaults to red*/
+}
 
+/* Background colour of code block is controled by /* .chroma { color: #586e75; background-color: #FDF6E3 } in static/highlight-light.css*/
+
+pre {
+  margin: 0 0 1rem 0;
+  background-color: #FDF6E3; /* Match default highlight theme. CAN'T FIGURE OUT WHAT THIS CHANGES*/
+  border: 15px;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+pre code {
+  white-space: pre; /* Override Bootstrap to preserve line breaks in code. */
+  overflow-x: auto;
+}
+
+html {
+  font-family: "LEMONMILKPro-UltraLight", "Raleway", sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: "LEMONMILK-Regular", "Raleway", sans-serif;
+  text-transform: uppercase;
+}
+
+#about .portrait-title h3 {
+  font-family: "LEMONMILKPro-UltraLight", "Raleway";
+  margin-top: 10px;
+  font-size: 0.75rem;
+}
+
+.navbar {
+  height: 70px;
+  background: $sta-menu-primary;
+/* this is the part that takes out the shadow & the only edit */
+  box-shadow: none;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family: "LEMONMILKPro-Regular", "Raleway", sans-serif;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  padding: 0 1rem;
+}
+
+.navbar-brand {
+  // Set v-padding to 5px to align with 50/70px responsive max navbar heights.
+  padding-top: 5px;
+  font-family: "LEMONMILKPro-Regular", "Raleway", sans-serif;
+  padding-bottom: 5px;
+  position: relative;
+  z-index: 1030;  // For z-index clickable mobile logo.
+}
 
 /*Trying to figure out how to override some elements of the highlight-light.css */
 /*This doesn't have the effect I was hoping, i.e. nothing visible */
-/* Background  .chroma { color: #586e75; background-color: #657B83 }
+/* Background */ .chroma { color: #586e75; background-color: #657B83 }
+
+  div.puzzle, div.fyi, div.demo, div.note {
+    padding: 1em;
+    margin: 1em 0;
+    padding-left: 100px;
+    background-size: 70px;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    min-height: 120px;
+    color: #1f5386;
+    background-color: #bed3ec;
+    border: solid 5px #dfedff;
+  }
+
+/*Trying to figure out how to override some elements of the highlight-light.css */
+/*This doesn't have the effect I was hoping, i.e. nothing visible */
+/* Background */ .chroma { color: #586e75; background-color: #657B83 }
 
 /*
 
@@ -38,31 +117,3 @@
 
 */
 
-/*
-@font-face {
-  font-family: 'Lemon Milk';
-  src: local('lemonmilk_regular'), url('fonts/lemonmilk_regular.woff2') format('woff2'),
-       url('fonts/lemonmilk_regular.woff') format('woff'),
-       url('fonts/lemonmilk_regular.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lemon Milk Bold';
-  src: local('lemonmilk_bold'), url('fonts/lemonmilk_bold.woff2') format('woff2'),
-       url('fonts/lemonmilk_bold.woff') format('woff'),
-       url('fonts/lemonmilk_bold.ttf') format('truetype');
-   font-weight: 900;
-   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lemon Milk Light';
-  src: local('lemonmilk_light'), url('fonts/lemonmilk_light.woff2') format('woff2'),
-       url('fonts/lemonmilk_light.woff') format('woff'),
-       url('fonts/lemonmilk_light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-*/

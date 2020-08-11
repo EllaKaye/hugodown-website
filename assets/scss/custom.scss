@@ -64,7 +64,7 @@ h1, h2, h3 {
   box-shadow: none;
   font-size: 18px;
   text-transform: uppercase;
-  font-family: "LEMONMILKPro-Medium", "Raleway", sans-serif;
+  font-family: "LEMONMILKPro-Regular", "Raleway", sans-serif;
   position: fixed;
   top: 0;
   right: 0;
@@ -76,7 +76,7 @@ h1, h2, h3 {
 .navbar-brand {
   // Set v-padding to 5px to align with 50/70px responsive max navbar heights.
   padding-top: 5px;
-  font-family: "LEMONMILKPro-Medium", "Raleway", sans-serif;
+  font-family: "LEMONMILKPro-Regular", "Raleway", sans-serif;
   padding-bottom: 5px;
   position: relative;
   z-index: 1030;  // For z-index clickable mobile logo.
