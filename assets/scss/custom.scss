@@ -101,19 +101,11 @@ h1, h2, h3 {
 
 /*Trying to figure out how to override some elements of the highlight-light.css */
 /*This doesn't have the effect I was hoping, i.e. nothing visible */
-/* Background */ .chroma { color: #586e75; background-color: #657B83 }
+/* Background */ /*.chroma { color: #586e75; background-color: #657B83 } */
 
-/*
-
-@font-face {
-    font-family: 'LEMON/MILK';
-    src: local('LEMONMILK-Regular'), url("fonts/LEMONMILK-Regular.otf") format("opentype");
+/* inside chroma chunks, replace the text that gets inline style of colour:#555555; with something from the solarized palate */
+span.c > span:first-child {
+  color: #586E75 !important;
 }
 
-@font-face {
-    font-family: 'Museo Slab';
-    src: local('MuseoSlab-500'), url("fonts/MuseoSlab-500.otf") format("opentype");
-}
-
-*/
 
