@@ -103,7 +103,7 @@ h1, h2, h3 {
 /*This doesn't have the effect I was hoping, i.e. nothing visible */
 /* Background */ /*.chroma { color: #586e75; background-color: #657B83 } */
 
-/* inside chroma chunks, replace the text that gets inline style of colour:#555555; with something from the solarized palate */
+/* inside chroma chunks, replace the text that gets inline style of colour:#555555; with something from the solarized palate - these are found in the first span after a span with class c */
 span.c > span:first-child {
   color: #586E75 !important;
 }
