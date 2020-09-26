@@ -26,4 +26,4 @@ slides: []
 
 `BradleyTerryScalable` is a package co-authored with David Firth to fit the Bradley-Terry model to (potentially) large and sparse data sets.
 
-It is currently available on GitHub, with plans for it to be on CRAN before too long.
+It is currently available on [GitHub](https://github.com/EllaKaye/BradleyTerryScalable), with plans for it to be on CRAN before too long.
