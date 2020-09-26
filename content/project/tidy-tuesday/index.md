@@ -28,4 +28,6 @@ links:
 slides: []
 ---
 
-My #TidyTuesday contributions
+I'm a very infrequent contributor to [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) (though always planning to do more!)
+
+As and when I do get a chance to participate, I'll be sharing my visualisations here.
