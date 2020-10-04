@@ -78,7 +78,7 @@ user_groups:
 - Visitors
 ---
 
-I am a PhD student in Statistics at the University of Warwick. I am part of the [OxWaSP programme](http://www.oxwasp-cdt.ac.uk). I am interested in Applied Statistics, particularly as applied in the Social Sciences. I am currently working on a project analysing data from applications to undergraduate statistics courses in the Statistics department at Warwick. I am supervised by [Dr Julia Brettschneider](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/brettschneider/) and [Dr Anastasia Papavasiliou](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/papavasiliou/).
+Hello! I am a PhD student in Statistics at the University of Warwick. I am part of the [OxWaSP programme](http://www.oxwasp-cdt.ac.uk). I am interested in Applied Statistics, particularly as applied in the Social Sciences. I am currently working on a project analysing data from applications to undergraduate statistics courses in the Statistics department at Warwick. I am supervised by [Dr Julia Brettschneider](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/brettschneider/) and [Dr Anastasia Papavasiliou](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/papavasiliou/).
 
 I am an R enthusiast. I am the author, along with [Prof David Firth](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/) of the `BradleyTerryScalable package`, which is available on [GitHub](https://github.com/EllaKaye/BradleyTerryScalable). I am co-organiser of the [Oxford R User Group](https://www.meetup.com/Oxford-R-User-Group/) and also a member of the [Warwick R User Group](https://www.meetup.com/Warwick-useRs/).
 
