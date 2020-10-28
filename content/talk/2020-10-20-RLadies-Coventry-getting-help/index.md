@@ -28,18 +28,18 @@ image:
   focal_point: Right
 
 links:
-#- icon: images
-#  icon_pack: fas
-#  name: slides
-#  url: "https://ellakaye.github.io/RLadies-Tbilisi-talk/text_in_R_Tbilisi.html#1"
+- icon: images
+  icon_pack: fas
+  name: slides
+  url: "https://ellakaye.github.io/Rladies-Coventry-getting-help-in-R/getting_help_in_R.html#1"
 #- icon: play-circle
 #  icon_pack: fas
 #  name: video
 #  url: "https://youtu.be/AnVzb5XI0Iw"
-#- icon: github
-#  icon_pack: fab
-#  name: materials
-#  url: "https://github.com/EllaKaye/RLadies-Tbilisi-talk"
+- icon: github
+  icon_pack: fab
+  name: materials
+  url: "https://github.com/EllaKaye/Rladies-Coventry-getting-help-in-R"
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
