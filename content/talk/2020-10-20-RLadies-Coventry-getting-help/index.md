@@ -5,7 +5,7 @@ event_url: https://www.meetup.com/rladies-coventry/events/273429872/
 
 location: Zoom
 
-summary: How to get help in R
+summary: Tips for looking for answers and asking questions about R
 abstract: "This session will be led by Ella Kaye - an R enthusiast and statistics PhD researcher at the University of Warwick. In the session, Ella will talk us through different ways to get help when you get stuck on a problem in R. We’ll cover how and where to look for answers and how to ask and post good questions that make it easy for others to help you, including a demo of the excellent `reprex` and `datapasta` packages. So whether you’re an R novice or more experienced R user, hopefully there’ll be some useful tips for you!"
 
 # Talk start and end times.
