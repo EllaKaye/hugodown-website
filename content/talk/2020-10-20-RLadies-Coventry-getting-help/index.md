@@ -32,10 +32,10 @@ links:
   icon_pack: fas
   name: slides
   url: "https://ellakaye.github.io/Rladies-Coventry-getting-help-in-R/getting_help_in_R.html#1"
-#- icon: play-circle
-#  icon_pack: fas
-#  name: video
-#  url: "https://youtu.be/AnVzb5XI0Iw"
+- icon: play-circle
+  icon_pack: fas
+  name: video
+  url: "https://www.youtube.com/watch?v=YhR1gKhWmxs&t=1661s"
 - icon: github
   icon_pack: fab
   name: materials
