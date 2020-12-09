@@ -57,7 +57,7 @@ expand.grid(expenses, expenses) %>%
   pull(prod)
 ```
 
-The follow-up challenge is the same but with three numbers. I went with essentially the same code but it's notably slower. There are a lot of repeated calculation here: each triplet appears six times in the table.
+The follow-up challenge is the same but with three numbers. I went with essentially the same code but it's notably slower. There are a lot of repeated calculations here: each triplet appears six times in the table.
 
 ```{r}
 expand.grid(expenses, expenses, expenses) %>% 

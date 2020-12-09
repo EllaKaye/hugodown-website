@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 4141a8bda3090361
+rmd_hash: 5cbb1c4009279fdf
 
 ---
 
@@ -65,7 +65,7 @@ The challenge is to find two numbers from a list that sum to 2020, then to repor
 
 </div>
 
-The follow-up challenge is the same but with three numbers. I went with essentially the same code but it's notably slower. There are a lot of repeated calculation here: each triplet appears six times in the table.
+The follow-up challenge is the same but with three numbers. I went with essentially the same code but it's notably slower. There are a lot of repeated calculations here: each triplet appears six times in the table.
 
 <div class="highlight">
 
