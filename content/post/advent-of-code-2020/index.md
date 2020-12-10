@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 37a161a2706a70dc
+rmd_hash: a199b9adb7c36375
 
 ---
 
@@ -37,8 +37,9 @@ There will no doubt be a wide variety of ways to solve these problems. I'm going
 
 Each participant gets different input data, so my numerical solutions may be different from others. If you're not signed up for Advent of Code yourself, but want to follow along with my data, you can download it at from the data links at the beginning of each day's section. The links in the day section headers take you to challenge on the Advent of Code page. The links directly below are a table of contents for this page.
 
-1.  <a href="#day1">Report repair</a>
-2.  <a href="#day2">Password philosophy</a>
+1.  <a href="#day1">Report Repair</a>
+2.  <a href="#day2">Password Philosophy</a>
+3.  <a href="#day3">Toboggan Trajectory</a>
 
 <p>
 <a id='day1'></a>
@@ -92,7 +93,7 @@ The follow-up challenge is the same but with three numbers. I went with essentia
 <a id='day2'></a>
 </p>
 
-Day 2: [Password philosophy](https://adventofcode.com/2020/day/2)
+Day 2: [Password Philosophy](https://adventofcode.com/2020/day/2)
 -----------------------------------------------------------------
 
 [My day 2 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day2.txt)
@@ -163,4 +164,106 @@ There were a couple of *gotchas* here. When I used [`separate()`](https://tidyr.
 <p>
 <a id='day3'></a>
 </p>
+
+Day 3: [Toboggan Trajectory](https://adventofcode.com/2020/day/3)
+-----------------------------------------------------------------
+
+[My day 3 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day3.txt)
+
+#### Part 1: Encountering trees
+
+Starting at the top left corner of the map, how many trees ("\#") do we encounter, going at a trajectory of 3 right and 1 down?
+
+First, read in the data and save it into a matrix. My method here feels really hack-y. I'm sure there must be a better approach.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+
+<span class='k'>tree_map</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"AoC_day3.txt"</span>, col_names = <span class='kc'>FALSE</span>)
+
+<span class='k'>num_col</span> <span class='o'>&lt;-</span> <span class='k'>tree_map</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(length = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_length.html'>str_length</a></span>(<span class='k'>X1</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>length</span>)
+
+<span class='k'>tree_vec</span> <span class='o'>&lt;-</span> <span class='k'>tree_map</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(X1 = <span class='nf'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='k'>X1</span>, split = <span class='nf'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='m'>0</span>), fixed = <span class='kc'>TRUE</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>X1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>()
+
+<span class='k'>tree_mat</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='k'>tree_vec</span>, ncol = <span class='k'>num_col</span>, byrow = <span class='kc'>TRUE</span>)</code></pre>
+
+</div>
+
+Now work my way across and down the matrix, using the [`%%`](https://rdrr.io/r/base/Arithmetic.html) modulo operator to loop round where necessary. The `-1` and `+1` in the line `((y + right - 1) %% num_col) + 1` is a hack to get round the fact that, for `num_col` columns, the modulo runs from `0` to `num_col - 1`, but the column indexes for our matrix run from `1` to `num_col`.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>right</span> <span class='o'>&lt;-</span> <span class='m'>3</span>
+<span class='k'>down</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+
+<span class='k'>num_rows</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>tree_mat</span>)
+<span class='k'>num_col</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='k'>tree_mat</span>)
+
+<span class='c'># start counting trees encountered</span>
+<span class='k'>trees</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='c'># start square</span>
+<span class='k'>x</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+<span class='k'>y</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+  
+<span class='kr'>while</span> (<span class='k'>x</span> <span class='o'>&lt;=</span> <span class='k'>num_rows</span>) {
+  
+  <span class='c'># cat("row: ", x, "col: ", y, "\n")</span>
+  
+  <span class='kr'>if</span> (<span class='k'>tree_mat</span>[<span class='k'>x</span>,<span class='k'>y</span>] <span class='o'>==</span> <span class='s'>"#"</span>) <span class='k'>trees</span> <span class='o'>&lt;-</span> <span class='k'>trees</span> <span class='o'>+</span> <span class='m'>1</span>
+  
+  <span class='k'>x</span> <span class='o'>&lt;-</span> <span class='k'>x</span> <span class='o'>+</span> <span class='k'>down</span>
+  <span class='k'>y</span> <span class='o'>&lt;-</span> ((<span class='k'>y</span> <span class='o'>+</span> <span class='k'>right</span> <span class='o'>-</span> <span class='m'>1</span>) <span class='o'>%%</span> <span class='k'>num_col</span>) <span class='o'>+</span> <span class='m'>1</span>
+  
+}
+
+<span class='k'>trees</span>
+<span class='c'>#&gt; [1] 299</span></code></pre>
+
+</div>
+
+#### Part 2: Checking further slopes
+
+We now need to check several other trajectories, and multiply together the number of trees we find, so we wrap the Part 1 code into a function.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>slope_check</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>tree_mat</span>, <span class='k'>right</span>, <span class='k'>down</span>) {
+  
+  <span class='k'>num_rows</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>tree_mat</span>)
+  <span class='k'>num_col</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='k'>tree_mat</span>)
+
+  <span class='c'># start counting trees encountered</span>
+  <span class='k'>trees</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+  <span class='c'># start square</span>
+  <span class='k'>x</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+  <span class='k'>y</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+  
+  <span class='kr'>while</span> (<span class='k'>x</span> <span class='o'>&lt;=</span> <span class='k'>num_rows</span>) {
+  
+    <span class='kr'>if</span> (<span class='k'>tree_mat</span>[<span class='k'>x</span>,<span class='k'>y</span>] <span class='o'>==</span> <span class='s'>"#"</span>) <span class='k'>trees</span> <span class='o'>&lt;-</span> <span class='k'>trees</span> <span class='o'>+</span> <span class='m'>1</span>
+  
+    <span class='k'>x</span> <span class='o'>&lt;-</span> <span class='k'>x</span> <span class='o'>+</span> <span class='k'>down</span>
+    <span class='k'>y</span> <span class='o'>&lt;-</span> ((<span class='k'>y</span> <span class='o'>+</span> <span class='k'>right</span> <span class='o'>-</span> <span class='m'>1</span>) <span class='o'>%%</span> <span class='k'>num_col</span>) <span class='o'>+</span> <span class='m'>1</span>
+  
+  }
+  <span class='k'>trees</span>
+}
+
+<span class='nf'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>1</span>, <span class='m'>1</span>),
+     <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>3</span>, <span class='m'>1</span>),
+     <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>5</span>, <span class='m'>1</span>),
+     <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>7</span>, <span class='m'>1</span>),
+     <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>1</span>, <span class='m'>2</span>))
+<span class='c'>#&gt; [1] 3621285278</span></code></pre>
+
+</div>
 
