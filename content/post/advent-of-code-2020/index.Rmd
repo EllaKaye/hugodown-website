@@ -42,7 +42,7 @@ Each participant gets different input data, so my numerical solutions may be dif
 
 ## Day 1: [Report Repair](https://adventofcode.com/2020/day/1)
 
-[Day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
+[My day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
 
 #### Part 1: Two numbers
 
@@ -80,6 +80,8 @@ expand.grid(expenses, expenses, expenses) %>%
 <p><a id='day2'></a></p>
 
 ## Day 2: [Password philosophy](https://adventofcode.com/2020/day/2)
+
+[My day 2 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day2.txt)
 
 #### Part 1: Number of letters
 

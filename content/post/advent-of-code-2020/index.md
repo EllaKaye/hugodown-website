@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: f308ca9bf5d91e11
+rmd_hash: 37a161a2706a70dc
 
 ---
 
@@ -47,7 +47,7 @@ Each participant gets different input data, so my numerical solutions may be dif
 Day 1: [Report Repair](https://adventofcode.com/2020/day/1)
 -----------------------------------------------------------
 
-[Day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
+[My day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
 
 #### Part 1: Two numbers
 
@@ -94,6 +94,8 @@ The follow-up challenge is the same but with three numbers. I went with essentia
 
 Day 2: [Password philosophy](https://adventofcode.com/2020/day/2)
 -----------------------------------------------------------------
+
+[My day 2 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day2.txt)
 
 #### Part 1: Number of letters
 
@@ -143,7 +145,7 @@ Next, we use the `stringr` function [`str_count()`](https://stringr.tidyverse.or
 
 Now the policy is interpreted differently. Each policy actually describes two positions in the password, where 1 means the first character, 2 means the second character, and so on. Exactly one of these positions must contain the given letter. How many are valid now?
 
-There were a couple of *gotchas* here. When I used [`separate()`](https://tidyr.tidyverse.org/reference/separate.html) in the previous part, I had inadvertently left a leading whitespace in front of the password, something that was messing up my indexing with `str_sub`. Using [`str_trim()`](https://stringr.tidyverse.org/reference/str_trim.html) first cleared that up. Also, we need *exactly one* of the positions to match. [`|`](https://rdrr.io/r/base/Logic.html) is an inclusive or. We need [`xor()`](https://rdrr.io/r/base/Logic.html) for exclusion or instead.
+There were a couple of *gotchas* here. When I used [`separate()`](https://tidyr.tidyverse.org/reference/separate.html) in the previous part, I had inadvertently left a leading whitespace in front of the password, something that was messing up my indexing with `str_sub`. Using [`str_trim()`](https://stringr.tidyverse.org/reference/str_trim.html) first cleared that up. Also, we need *exactly one* of the positions to match. [`|`](https://rdrr.io/r/base/Logic.html) is an inclusive or. We need [`xor()`](https://rdrr.io/r/base/Logic.html) for exclusive or instead.
 
 <div class="highlight">
 
