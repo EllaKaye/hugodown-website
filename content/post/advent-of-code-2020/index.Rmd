@@ -234,3 +234,6 @@ prod(slope_check(tree_mat, 1, 1),
      slope_check(tree_mat, 1, 2))
 ```
 
+## Next
+
+This post will be updated as I work my way through the remainder of the challenges.

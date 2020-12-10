@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: a199b9adb7c36375
+rmd_hash: cdf57d6d74ddb084
 
 ---
 
@@ -266,4 +266,9 @@ We now need to check several other trajectories, and multiply together the numbe
 <span class='c'>#&gt; [1] 3621285278</span></code></pre>
 
 </div>
+
+Next
+----
+
+This post will be updated as I work my way through the remainder of the challenges.
 
