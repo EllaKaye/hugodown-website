@@ -6,8 +6,8 @@ title: "Advent of Code 2020"
 subtitle: ""
 summary: "My attempts at [Advent of Code](https://adventofcode.com)."
 authors: []
-tags: []
-categories: []
+tags: ["R", "rstats", "code"]
+categories: ["R"]
 date: 2020-12-09
 lastmod: 2020-12-09
 featured: false
@@ -27,15 +27,15 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 9a91b5660ad6c692
+rmd_hash: f308ca9bf5d91e11
 
 ---
 
-[Advent of Code](https://adventofcode.com) is a series of small programming challenges, released daily throughout December in the run-up to Christmas. They are designed to be solved in any programming language. I will be using R.
+[Advent of Code](https://adventofcode.com) is a series of small programming challenges, released daily throughout December in the run-up to Christmas. Part 1 of the challenge is given first. On its successful completion, Part 2 is revealed. The challenges are designed to be solved in any programming language. I will be using R.
 
-There will no doubt be a wide variety of ways of solving these problems. I'm going to go with the first thing I think of that gets an answer. In most cases, I image there will be more efficient solutions.
+There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets an answer. In most cases, I expect that there will be more concise and efficient solutions.
 
-Each participant gets different input data, so my numerical solutions may be different from others.
+Each participant gets different input data, so my numerical solutions may be different from others. If you're not signed up for Advent of Code yourself, but want to follow along with my data, you can download it at from the data links at the beginning of each day's section. The links in the day section headers take you to challenge on the Advent of Code page. The links directly below are a table of contents for this page.
 
 1.  <a href="#day1">Report repair</a>
 2.  <a href="#day2">Password philosophy</a>
@@ -47,7 +47,13 @@ Each participant gets different input data, so my numerical solutions may be dif
 Day 1: [Report Repair](https://adventofcode.com/2020/day/1)
 -----------------------------------------------------------
 
+[Day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
+
+#### Part 1: Two numbers
+
 The challenge is to find two numbers from a list that sum to 2020, then to report their product.
+
+[`expand.grid()`](https://rdrr.io/r/base/expand.grid.html) creates a data frame from all combinations of the supplied vectors. Since the vectors are the same, each pair is duplicated. In this case the two numbers in the list that sum to 2020 are 704 and 1316, and we have one row with 704 as Var1 and one with 704 as Var2. [`slice(1)`](https://dplyr.tidyverse.org/reference/slice.html) takes the first occurrence of the pair.
 
 <div class="highlight">
 
@@ -66,7 +72,7 @@ The challenge is to find two numbers from a list that sum to 2020, then to repor
 
 </div>
 
-`expand.grid` creates a data frame from all combinations of the supplied vectors. Since the vectors are the same, each pair is duplicated. In this case the two numbers in the list that sum to 2020 are 704 and 1316, and we have one row with 704 as Var1 and one with 704 as Var2. [`slice(1)`](https://dplyr.tidyverse.org/reference/slice.html) takes the first occurence of the pair.
+#### Part 2: Three numbers
 
 The follow-up challenge is the same but with three numbers. I went with essentially the same code but it's notably slower. There are a lot of repeated calculations here: each triplet appears six times in the table.
 
@@ -89,6 +95,8 @@ The follow-up challenge is the same but with three numbers. I went with essentia
 Day 2: [Password philosophy](https://adventofcode.com/2020/day/2)
 -----------------------------------------------------------------
 
+#### Part 1: Number of letters
+
 We need to find how many passwords are valid according to their policy. The policies and passwords are given as follows:
 
     1-3 a: abcde
@@ -105,7 +113,7 @@ Each line gives the password policy and then the password. The password policy i
 
 </div>
 
-First load the libraries we'll need. We then read in the data and use `tidyr` functions to separate out the parts of the policy and the password:
+First load the libraries we'll need. We then read in the data and use `tidyr` functions to separate out the parts of the policy and the password, making sure to convert the columns to numeric as appropriate:
 
 <div class="highlight">
 
@@ -118,7 +126,7 @@ First load the libraries we'll need. We then read in the data and use `tidyr` fu
 
 </div>
 
-Next, we use the `stringr` function `str_count` to count how many times the given letter appears in the password, and conditional logic to check whether it is repeated within the specified number of times. Because `TRUE` has a numeric value of 1 and `FALSE` has a numeric value of 0, we can sum the resulting column to get a count of how many passwords are valid according to their policies.
+Next, we use the `stringr` function [`str_count()`](https://stringr.tidyverse.org/reference/str_count.html) to count how many times the given letter appears in the password, and conditional logic to check whether it is repeated within the specified number of times. Because `TRUE` has a numeric value of 1 and `FALSE` has a numeric value of 0, we can sum the resulting column to get a count of how many passwords are valid according to their policies.
 
 <div class="highlight">
 
@@ -131,5 +139,26 @@ Next, we use the `stringr` function `str_count` to count how many times the give
 
 </div>
 
-Part 2 to follow soon...
+#### Part 2: Position of letters
+
+Now the policy is interpreted differently. Each policy actually describes two positions in the password, where 1 means the first character, 2 means the second character, and so on. Exactly one of these positions must contain the given letter. How many are valid now?
+
+There were a couple of *gotchas* here. When I used [`separate()`](https://tidyr.tidyverse.org/reference/separate.html) in the previous part, I had inadvertently left a leading whitespace in front of the password, something that was messing up my indexing with `str_sub`. Using [`str_trim()`](https://stringr.tidyverse.org/reference/str_trim.html) first cleared that up. Also, we need *exactly one* of the positions to match. [`|`](https://rdrr.io/r/base/Logic.html) is an inclusive or. We need [`xor()`](https://rdrr.io/r/base/Logic.html) for exclusion or instead.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passwords</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(password = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span>(<span class='k'>password</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(pos1_letter = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>password</span>, <span class='k'>min</span>, <span class='k'>min</span>),
+         pos2_letter = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>password</span>, <span class='k'>max</span>, <span class='k'>max</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(match_one = <span class='nf'><a href='https://rdrr.io/r/base/Logic.html'>xor</a></span>(<span class='k'>pos1_letter</span> <span class='o'>==</span> <span class='k'>letter</span>, <span class='k'>pos2_letter</span> <span class='o'>==</span> <span class='k'>letter</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(correct = <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>match_one</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>correct</span>) 
+<span class='c'>#&gt; [1] 391</span></code></pre>
+
+</div>
+
+<p>
+<a id='day3'></a>
+</p>
 
