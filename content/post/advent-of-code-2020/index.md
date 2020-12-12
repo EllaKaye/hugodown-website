@@ -27,19 +27,21 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: cdf57d6d74ddb084
+rmd_hash: a0d47e934ff50948
 
 ---
 
 [Advent of Code](https://adventofcode.com) is a series of small programming challenges, released daily throughout December in the run-up to Christmas. Part 1 of the challenge is given first. On its successful completion, Part 2 is revealed. The challenges are designed to be solved in any programming language. I will be using R.
 
-There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets an answer. In most cases, I expect that there will be more concise and efficient solutions.
+There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets the right answer. In most cases, I expect that there will be more concise and efficient solutions.
 
 Each participant gets different input data, so my numerical solutions may be different from others. If you're not signed up for Advent of Code yourself, but want to follow along with my data, you can download it at from the data links at the beginning of each day's section. The links in the day section headers take you to challenge on the Advent of Code page. The links directly below are a table of contents for this page.
 
 1.  <a href="#day1">Report Repair</a>
 2.  <a href="#day2">Password Philosophy</a>
 3.  <a href="#day3">Toboggan Trajectory</a>
+4.  <a href="#day4">Passport Processing</a>
+5.  <a href="#day5">Binary Boarding</a>
 
 <p>
 <a id='day1'></a>
@@ -264,6 +266,190 @@ We now need to check several other trajectories, and multiply together the numbe
      <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>7</span>, <span class='m'>1</span>),
      <span class='nf'>slope_check</span>(<span class='k'>tree_mat</span>, <span class='m'>1</span>, <span class='m'>2</span>))
 <span class='c'>#&gt; [1] 3621285278</span></code></pre>
+
+</div>
+
+<p>
+<a id='day4'></a>
+</p>
+
+Day 4: [Passport Processing](https://adventofcode.com/2020/day/4)
+-----------------------------------------------------------------
+
+[My day 4 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day4.txt)
+
+#### Part 1: Complete passports
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://tidyr.tidyverse.org'>tidyr</a></span>)</code></pre>
+
+</div>
+
+Using [`readr::read_tsv()`](https://readr.tidyverse.org/reference/read_delim.html) off the bat removes the blank lines, making it impossible to identify the different passports, but reading in the data via [`readLines()`](https://rdrr.io/r/base/readLines.html) then converting [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html) preserves them, and then allows us to use `tidyverse` functions for the remaining tidying. [`cumsum()`](https://rdrr.io/r/base/cumsum.html) on a logical vectors takes advantage of `FALSE` having a numeric value of zero and `TRUE` having a numeric value of one.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passports</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"AoC_day4.txt"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate_rows.html'>separate_rows</a></span>(<span class='k'>value</span>, sep = <span class='s'>" "</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(new_passport = <span class='k'>value</span> <span class='o'>==</span> <span class='s'>""</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(ID = <span class='nf'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='k'>new_passport</span>) <span class='o'>+</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='o'>!</span><span class='k'>new_passport</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='o'>-</span><span class='k'>new_passport</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='k'>value</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"key"</span>, <span class='s'>"value"</span>), sep = <span class='s'>":"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/relocate.html'>relocate</a></span>(<span class='k'>ID</span>)</code></pre>
+
+</div>
+
+Our data is now in three columns, with ID, key and value, so now we need to find the number of passports with all seven fields once `cid` is excluded:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passports</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>key</span> != <span class='s'>"cid"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span>(<span class='k'>ID</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>n</span> <span class='o'>==</span> <span class='m'>7</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>()
+<span class='c'>#&gt; [1] 210</span></code></pre>
+
+</div>
+
+#### Part 2: Valid passports
+
+Now we need to add data validation checks:
+
+-   byr (Birth Year) - four digits; at least 1920 and at most 2002.
+-   iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+-   eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+-   hgt (Height) - a number followed by either cm or in:
+    -   If cm, the number must be at least 150 and at most 193.
+    -   If in, the number must be at least 59 and at most 76.
+-   hcl (Hair Color) - a \# followed by exactly six characters 0-9 or a-f.
+-   ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+-   pid (Passport ID) - a nine-digit number, including leading zeroes.
+-   cid (Country ID) - ignored, missing or not.
+
+Ignoring the `cid` field, we narrow down on passports that at least have the right number of fields, and extract the number from the `hgt` column:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>complete_passports</span> <span class='o'>&lt;-</span> <span class='k'>passports</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>key</span> != <span class='s'>"cid"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/count.html'>add_count</a></span>(<span class='k'>ID</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>n</span> <span class='o'>==</span> <span class='m'>7</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='o'>-</span><span class='k'>n</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(hgt_value = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"hgt"</span> <span class='o'>~</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/parse_number.html'>parse_number</a></span>(<span class='k'>value</span>),
+    <span class='kc'>TRUE</span> <span class='o'>~</span> <span class='m'>NA_real_</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>()</code></pre>
+
+</div>
+
+Then we create a `check` column, which is `TRUE` when the value for each key meets the required conditions. Those with 7 `TRUE`s are valid. Note that with [`case_when()`](https://dplyr.tidyverse.org/reference/case_when.html) we've left the check column as `NA` when the condition is `FALSE`, requiring `na.rm = TRUE` in the call to [`sum()`](https://rdrr.io/r/base/sum.html). We can get round that by adding a final line to the [`case_when()`](https://dplyr.tidyverse.org/reference/case_when.html) condition stating `TRUE ~ FALSE`. `TRUE` here is a catch-all for all remaining rows not covered by the conditions above, and then we set them to `FALSE`, but I find the line `TRUE ~ FALSE` unintuitive.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>complete_passports</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(check = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
+    (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"byr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&gt;=</span> <span class='m'>1920</span>) <span class='o'>&amp;</span> (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"byr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&lt;=</span> <span class='m'>2002</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"iyr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&gt;=</span> <span class='m'>2010</span>) <span class='o'>&amp;</span> (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"iyr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&lt;=</span> <span class='m'>2020</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"eyr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&gt;=</span> <span class='m'>2020</span>) <span class='o'>&amp;</span> (<span class='k'>key</span> <span class='o'>==</span> <span class='s'>"eyr"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>&lt;=</span> <span class='m'>2030</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"hgt"</span> <span class='o'>&amp;</span> <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='k'>value</span>, <span class='s'>"cm"</span>) <span class='o'>&amp;</span> <span class='k'>hgt_value</span> <span class='o'>&gt;=</span> <span class='m'>150</span> <span class='o'>&amp;</span> <span class='k'>hgt_value</span> <span class='o'>&lt;=</span> <span class='m'>193</span> <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"hgt"</span> <span class='o'>&amp;</span> <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='k'>value</span>, <span class='s'>"in"</span>) <span class='o'>&amp;</span> <span class='k'>hgt_value</span> <span class='o'>&gt;=</span> <span class='m'>59</span> <span class='o'>&amp;</span> <span class='k'>hgt_value</span> <span class='o'>&lt;=</span> <span class='m'>76</span> <span class='o'>~</span> <span class='kc'>TRUE</span>,  
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"hcl"</span> <span class='o'>&amp;</span> <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='k'>value</span>, <span class='s'>"^#[a-f0-9]{6}$"</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"ecl"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>%in%</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"amb"</span>, <span class='s'>"blu"</span>, <span class='s'>"brn"</span>, <span class='s'>"gry"</span>, <span class='s'>"grn"</span>, <span class='s'>"hzl"</span>, <span class='s'>"oth"</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>,
+    <span class='k'>key</span> <span class='o'>==</span> <span class='s'>"pid"</span> <span class='o'>&amp;</span> <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='k'>value</span>, <span class='s'>"^[0-9]{9}$"</span>) <span class='o'>~</span> <span class='kc'>TRUE</span>
+  )) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='k'>ID</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(check_all = <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>check</span>, na.rm = <span class='kc'>TRUE</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>check_all</span> <span class='o'>==</span> <span class='m'>7</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>()
+<span class='c'>#&gt; [1] 131</span></code></pre>
+
+</div>
+
+<p>
+<a id='day5'></a>
+</p>
+
+Day 5: [Binary Boarding](https://adventofcode.com/2020/day/5)
+-------------------------------------------------------------
+
+[My day 5 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day5.txt)
+
+#### Part 1: Finding all seat IDs
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://stringr.tidyverse.org'>stringr</a></span>)</code></pre>
+
+</div>
+
+The code below sets starts by setting each row number to 127 and each column number to 7, the maximum they can be, then, working along the string, lowering the maximum (or leaving it as is) one letter at a time:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>boarding</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"AoC_day5.txt"</span>, col_names = <span class='kc'>FALSE</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span>(binary = <span class='k'>X1</span>)
+
+<span class='k'>seat_IDs</span> <span class='o'>&lt;-</span> <span class='k'>boarding</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='m'>127</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(col = <span class='m'>7</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>1</span>, <span class='m'>1</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>64</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>2</span>, <span class='m'>2</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>32</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>3</span>, <span class='m'>3</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>16</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>4</span>, <span class='m'>4</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>8</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>5</span>, <span class='m'>5</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>4</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>6</span>, <span class='m'>6</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>2</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>7</span>, <span class='m'>7</span>) <span class='o'>==</span> <span class='s'>"F"</span>, <span class='k'>row</span> <span class='o'>-</span> <span class='m'>1</span>, <span class='k'>row</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(col = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>8</span>, <span class='m'>8</span>) <span class='o'>==</span> <span class='s'>"L"</span>, <span class='k'>col</span> <span class='o'>-</span> <span class='m'>4</span>, <span class='k'>col</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(col = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>9</span>, <span class='m'>9</span>) <span class='o'>==</span> <span class='s'>"L"</span>, <span class='k'>col</span> <span class='o'>-</span> <span class='m'>2</span>, <span class='k'>col</span>)) <span class='o'>%&gt;%</span>  
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(col = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span>(<span class='nf'><a href='https://stringr.tidyverse.org/reference/str_sub.html'>str_sub</a></span>(<span class='k'>binary</span>, <span class='m'>10</span>, <span class='m'>10</span>) <span class='o'>==</span> <span class='s'>"L"</span>, <span class='k'>col</span> <span class='o'>-</span> <span class='m'>1</span>, <span class='k'>col</span>)) <span class='o'>%&gt;%</span>  
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(ID = <span class='k'>row</span> <span class='o'>*</span> <span class='m'>8</span> <span class='o'>+</span> <span class='k'>col</span>) 
+
+<span class='k'>seat_IDs</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(max = <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='k'>ID</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>max</span>)
+<span class='c'>#&gt; [1] 963</span></code></pre>
+
+</div>
+
+OK, I know I said in the introduction to this post that I would go with the first solution I think of that gets the right answer, and the above does work, but I'm *deeply* unhappy with the code. There's too much repetition, I don't like the use of subtraction when diving by 2 feels more appropriate in a binary context, and it doesn't feel like I've taken full advantage of the mathematical structure of the problem. So, on further reflection, I realise that the way that ID is defined is essentially turning a binary number into a decimal, where we get the binary number as a string by replacing "B" and "R" by "1" and L\" and "F" by "0". Then, I just found, there is a base R function [`strtoi()`](https://rdrr.io/r/base/strtoi.html) that takes a string of digits in a given base and converts it to a base 10 integer, just what we need:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>seat_IDs</span> <span class='o'>&lt;-</span> <span class='k'>boarding</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(binary = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span>(<span class='k'>binary</span>, <span class='s'>"L|F"</span>, <span class='s'>"0"</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(binary = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace_all</a></span>(<span class='k'>binary</span>, <span class='s'>"B|R"</span>, <span class='s'>"1"</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(ID = <span class='nf'><a href='https://rdrr.io/r/base/strtoi.html'>strtoi</a></span>(<span class='k'>binary</span>, base = <span class='m'>2</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='nf'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span>(<span class='k'>ID</span>))
+
+<span class='k'>seat_IDs</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>ID</span>)
+<span class='c'>#&gt; [1] 963</span></code></pre>
+
+</div>
+
+That's better!
+
+#### Part 2: Finding my seat ID
+
+We need to find the missing number, so we arrange the IDs in ascending order and look at the gap between each ID and the preceding one. In most cases, that should be one. Where we have a gap of 2, we've must have skipped the integer below:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>seat_IDs</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='k'>ID</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(diff = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span>(<span class='k'>ID</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(gap = <span class='k'>ID</span> <span class='o'>-</span> <span class='k'>diff</span>) <span class='o'>%&gt;%</span> 
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>gap</span> <span class='o'>==</span> <span class='m'>2</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(my_seat = <span class='k'>ID</span> <span class='o'>-</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>my_seat</span>)
+<span class='c'>#&gt; [1] 592</span></code></pre>
 
 </div>
 

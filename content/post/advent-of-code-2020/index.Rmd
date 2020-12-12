@@ -31,13 +31,15 @@ projects: []
 
 [Advent of Code](https://adventofcode.com) is a series of small programming challenges, released daily throughout December in the run-up to Christmas. Part 1 of the challenge is given first. On its successful completion, Part 2 is revealed. The challenges are designed to be solved in any programming language. I will be using R. 
 
-There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets an answer. In most cases, I expect that there will be more concise and efficient solutions.
+There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets the right answer. In most cases, I expect that there will be more concise and efficient solutions.
 
 Each participant gets different input data, so my numerical solutions may be different from others. If you're not signed up for Advent of Code yourself, but want to follow along with my data, you can download it at from the data links at the beginning of each day's section. The links in the day section headers take you to challenge on the Advent of Code page. The links directly below are a table of contents for this page.
 
 1. <a href="#day1">Report Repair</a> 
 2. <a href="#day2">Password Philosophy</a>
 3. <a href="#day3">Toboggan Trajectory</a>
+4. <a href="#day4">Passport Processing</a>
+4. <a href="#day5">Binary Boarding</a>
 
 <p><a id='day1'></a></p>
 
@@ -233,6 +235,162 @@ prod(slope_check(tree_mat, 1, 1),
      slope_check(tree_mat, 7, 1),
      slope_check(tree_mat, 1, 2))
 ```
+
+<p><a id='day4'></a></p>
+
+## Day 4: [Passport Processing](https://adventofcode.com/2020/day/4)
+
+[My day 4 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day4.txt)
+
+#### Part 1: Complete passports
+
+```{r}
+library(dplyr)
+library(tidyr)
+```
+
+Using `readr::read_tsv()` off the bat removes the blank lines, making it impossible to identify the different passports, but reading in the data via `readLines()` then converting `as_tibble()` preserves them, and then allows us to use `tidyverse` functions for the remaining tidying. `cumsum()` on a logical vectors takes advantage of `FALSE` having a numeric value of zero and `TRUE` having a numeric value of one.
+
+```{r}
+passports <- readLines("AoC_day4.txt") %>%
+  as_tibble() %>%
+  separate_rows(value, sep = " ") %>%
+  mutate(new_passport = value == "") %>%
+  mutate(ID = cumsum(new_passport) + 1) %>%
+  filter(!new_passport) %>%
+  select(-new_passport) %>%
+  separate(value, c("key", "value"), sep = ":") %>%
+  relocate(ID)
+```
+
+Our data is now in three columns, with ID, key and value, so now we need to find the number of passports with all seven fields once `cid` is excluded:
+
+```{r}
+passports %>%
+  filter(key != "cid") %>%
+  count(ID) %>%
+  filter(n == 7) %>%
+  nrow()
+```
+
+#### Part 2: Valid passports
+
+Now we need to add data validation checks:
+
+- byr (Birth Year) - four digits; at least 1920 and at most 2002.
+- iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+- eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+- hgt (Height) - a number followed by either cm or in:
+    - If cm, the number must be at least 150 and at most 193.
+    - If in, the number must be at least 59 and at most 76.
+- hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+- ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+- pid (Passport ID) - a nine-digit number, including leading zeroes.
+- cid (Country ID) - ignored, missing or not.
+
+Ignoring the `cid` field, we narrow down on passports that at least have the right number of fields, and extract the number from the `hgt` column:
+
+```{r, message = FALSE, warning = FALSE}
+complete_passports <- passports %>%
+  filter(key != "cid") %>%
+  add_count(ID) %>%
+  filter(n == 7) %>%
+  select(-n) %>%
+  mutate(hgt_value = case_when(
+    key == "hgt" ~ readr::parse_number(value),
+    TRUE ~ NA_real_)) %>%
+  ungroup()
+```
+
+Then we create a `check` column, which is `TRUE` when the value for each key meets the required conditions. Those with 7 `TRUE`s are valid. Note that with `case_when()` we've left the check column as `NA` when the condition is `FALSE`, requiring `na.rm = TRUE` in the call to `sum()`. We can get round that by adding a final line to the `case_when()` condition stating `TRUE ~ FALSE`. `TRUE` here is a catch-all for all remaining rows not covered by the conditions above, and then we set them to `FALSE`, but I find the line `TRUE ~ FALSE` unintuitive. 
+
+```{r, message = FALSE}
+complete_passports %>%
+  mutate(check = case_when(
+    (key == "byr" & value >= 1920) & (key == "byr" & value <= 2002) ~ TRUE,
+    (key == "iyr" & value >= 2010) & (key == "iyr" & value <= 2020) ~ TRUE,
+    (key == "eyr" & value >= 2020) & (key == "eyr" & value <= 2030) ~ TRUE,
+    key == "hgt" & str_detect(value, "cm") & hgt_value >= 150 & hgt_value <= 193 ~ TRUE,
+    key == "hgt" & str_detect(value, "in") & hgt_value >= 59 & hgt_value <= 76 ~ TRUE,  
+    key == "hcl" & str_detect(value, "^#[a-f0-9]{6}$") ~ TRUE,
+    key == "ecl" & value %in% c("amb", "blu", "brn", "gry", "grn", "hzl", "oth") ~ TRUE,
+    key == "pid" & str_detect(value, "^[0-9]{9}$") ~ TRUE
+  )) %>%
+  group_by(ID) %>%
+  summarise(check_all = sum(check, na.rm = TRUE)) %>%
+  filter(check_all == 7) %>%
+  nrow()
+```
+
+<p><a id='day5'></a></p>
+
+## Day 5: [Binary Boarding](https://adventofcode.com/2020/day/5)
+
+[My day 5 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day5.txt)
+
+#### Part 1: Finding all seat IDs
+
+```{r message = FALSE}
+library(dplyr)
+library(stringr)
+```
+
+The code below sets starts by setting each row number to 127 and each column number to 7, the maximum they can be, then, working along the string, lowering the maximum (or leaving it as is) one letter at a time:
+
+```{r, message = FALSE}
+boarding <- readr::read_tsv("AoC_day5.txt", col_names = FALSE) %>%
+  rename(binary = X1)
+
+seat_IDs <- boarding %>%
+  mutate(row = 127) %>%
+  mutate(col = 7) %>%
+  mutate(row = if_else(str_sub(binary, 1, 1) == "F", row - 64, row)) %>%
+  mutate(row = if_else(str_sub(binary, 2, 2) == "F", row - 32, row)) %>%
+  mutate(row = if_else(str_sub(binary, 3, 3) == "F", row - 16, row)) %>%
+  mutate(row = if_else(str_sub(binary, 4, 4) == "F", row - 8, row)) %>%
+  mutate(row = if_else(str_sub(binary, 5, 5) == "F", row - 4, row)) %>%
+  mutate(row = if_else(str_sub(binary, 6, 6) == "F", row - 2, row)) %>%
+  mutate(row = if_else(str_sub(binary, 7, 7) == "F", row - 1, row)) %>%
+  mutate(col = if_else(str_sub(binary, 8, 8) == "L", col - 4, col)) %>%
+  mutate(col = if_else(str_sub(binary, 9, 9) == "L", col - 2, col)) %>%  
+  mutate(col = if_else(str_sub(binary, 10, 10) == "L", col - 1, col)) %>%  
+  mutate(ID = row * 8 + col) 
+
+seat_IDs %>%
+  summarise(max = max(ID)) %>%
+  pull(max)
+```
+
+OK, I know I said in the introduction to this post that I would go with the first solution I think of that gets the right answer, and the above does work, but I'm *deeply* unhappy with the code. There's too much repetition, I don't like the use of subtraction when diving by 2 feels more appropriate in a binary context, and it doesn't feel like I've taken full advantage of the mathematical structure of the problem. So, on further reflection, I realise that the way that ID is defined is essentially turning a binary number into a decimal, where we get the binary number as a string by replacing "B" and "R" by "1" and L" and "F" by "0". Then, I just found, there is a base R function `strtoi()` that takes a string of digits in a given base and converts it to a base 10 integer, just what we need:
+
+```{r}
+seat_IDs <- boarding %>%
+  mutate(binary = str_replace_all(binary, "L|F", "0")) %>%
+  mutate(binary = str_replace_all(binary, "B|R", "1")) %>%
+  mutate(ID = strtoi(binary, base = 2)) %>%
+  arrange(desc(ID))
+
+seat_IDs %>%
+  slice(1) %>%
+  pull(ID)
+```
+
+That's better!
+
+#### Part 2: Finding my seat ID
+
+We need to find the missing number, so we arrange the IDs in ascending order and look at the gap between each ID and the preceding one. In most cases, that should be one. Where we have a gap of 2, we've must have skipped the integer below:
+
+```{r}
+seat_IDs %>%
+  arrange(ID) %>%
+  mutate(diff = lag(ID)) %>%
+  mutate(gap = ID - diff) %>% 
+  filter(gap == 2) %>%
+  summarise(my_seat = ID - 1) %>%
+  pull(my_seat)
+```
+
 
 ## Next
 
