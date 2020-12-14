@@ -27,13 +27,13 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: a0d47e934ff50948
+rmd_hash: c23fc18476f92f27
 
 ---
 
 [Advent of Code](https://adventofcode.com) is a series of small programming challenges, released daily throughout December in the run-up to Christmas. Part 1 of the challenge is given first. On its successful completion, Part 2 is revealed. The challenges are designed to be solved in any programming language. I will be using R.
 
-There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets the right answer. In most cases, I expect that there will be more concise and efficient solutions.
+There will no doubt be a wide variety of ways to solve these problems. I'm going to go with the first thing I think of that gets the right answer. In most cases, I expect that there will be more concise and efficient solutions. Most of the time I'm working in R, it's within the [tidyverse](https://www.tidyverse.org), so I imagine that framework will feature heavily below.
 
 Each participant gets different input data, so my numerical solutions may be different from others. If you're not signed up for Advent of Code yourself, but want to follow along with my data, you can download it at from the data links at the beginning of each day's section. The links in the day section headers take you to challenge on the Advent of Code page. The links directly below are a table of contents for this page.
 
@@ -42,6 +42,8 @@ Each participant gets different input data, so my numerical solutions may be dif
 3.  <a href="#day3">Toboggan Trajectory</a>
 4.  <a href="#day4">Passport Processing</a>
 5.  <a href="#day5">Binary Boarding</a>
+6.  <a href="#day6">Custom Customs</a>
+7.  <a href="#day7">Handy Haverstocks</a>
 
 <p>
 <a id='day1'></a>
@@ -438,7 +440,7 @@ That's better!
 
 #### Part 2: Finding my seat ID
 
-We need to find the missing number, so we arrange the IDs in ascending order and look at the gap between each ID and the preceding one. In most cases, that should be one. Where we have a gap of 2, we've must have skipped the integer below:
+We need to find the missing number, so we arrange the IDs in ascending order and look at the gap between each ID and the preceding one. In most cases, that should be one. Where we have a gap of 2, we must have skipped the integer below:
 
 <div class="highlight">
 
@@ -450,6 +452,177 @@ We need to find the missing number, so we arrange the IDs in ascending order and
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(my_seat = <span class='k'>ID</span> <span class='o'>-</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>my_seat</span>)
 <span class='c'>#&gt; [1] 592</span></code></pre>
+
+</div>
+
+<p>
+<a id='day6'></a>
+</p>
+
+Day 6: [Custom Customs](https://adventofcode.com/2020/day/6)
+------------------------------------------------------------
+
+[My day 6 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day6.txt)
+
+#### Part 1: Anyone answers
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://tidyr.tidyverse.org'>tidyr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://stringr.tidyverse.org'>stringr</a></span>)</code></pre>
+
+</div>
+
+Within each group, we need to find the number of unique letters within each group. We read in and separate the data using the tricks learnt for <a href="#day4">Day 4</a>, and take advantage of the [`rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html) feature in `dplyr 1.0.0`.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>customs_groups</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"AoC_day6.txt"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(new_group = <span class='k'>value</span> <span class='o'>==</span> <span class='s'>""</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(group_ID = <span class='nf'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='k'>new_group</span>) <span class='o'>+</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='o'>!</span><span class='k'>new_group</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='o'>-</span><span class='k'>new_group</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='k'>group_ID</span>) 
+
+<span class='k'>customs_groups</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(qs = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='k'>value</span>, collapse = <span class='s'>""</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(qss = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span>(<span class='k'>qs</span>, <span class='s'>""</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(qsu = <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='k'>qss</span>))) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(count = <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>qsu</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(total = <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>count</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>total</span>)
+<span class='c'>#&gt; [1] 6585</span></code></pre>
+
+</div>
+
+#### Part 2: Everyone answers
+
+Now, instead of unique letters in a group, we need to find the number of letters which appear in all the answers for everyone in the same group. I first note how many people are in each group, then tabulate the number of occurrences of each letter in the group, then count (by summing a logical vector) the number of matches between occurrences of letter and the number in group. Finally, we sum across all groups.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>customs_groups</span> <span class='o'>%&gt;%</span>  
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/count.html'>add_count</a></span>(<span class='k'>group_ID</span>, name = <span class='s'>"num_in_group"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='k'>group_ID</span>, <span class='k'>num_in_group</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(qs = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='k'>value</span>, collapse = <span class='s'>""</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(qss = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_split.html'>str_split</a></span>(<span class='k'>qs</span>, <span class='s'>""</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(letter_table = <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='k'>qss</span>))) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(in_common = <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>num_in_group</span> <span class='o'>==</span> <span class='k'>letter_table</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(total = <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>in_common</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>total</span>)
+<span class='c'>#&gt; [1] 3276</span></code></pre>
+
+</div>
+
+<p>
+<a id='day7'></a>
+</p>
+
+Day 7: [Handy Haverstocks](https://adventofcode.com/2020/day/7)
+---------------------------------------------------------------
+
+[My day 7 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day7.txt)
+
+#### Part 1: Number of colour bags
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span>)</code></pre>
+
+</div>
+
+We have colour-coded bags that must contain a specific number of other colour-coded bags.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>bags</span> <span class='o'>&lt;-</span> <span class='nf'>read_tsv</span>(<span class='s'>"AoC_day7.txt"</span>, col_names = <span class='kc'>FALSE</span>)
+
+<span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='k'>bags</span>)
+<span class='c'>#&gt; <span style='color: #555555;'># A tibble: 6 x 1</span></span>
+<span class='c'>#&gt;   X1                                                                            </span>
+<span class='c'>#&gt;   <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                                                         </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>1</span><span> wavy bronze bags contain 5 striped gold bags, 5 light tomato bags.            </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>2</span><span> drab indigo bags contain 4 pale bronze bags, 2 mirrored lavender bags.        </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>3</span><span> pale olive bags contain 3 faded bronze bags, 5 wavy orange bags, 3 clear blac…</span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>4</span><span> faded white bags contain 5 vibrant violet bags, 4 light teal bags.            </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>5</span><span> mirrored magenta bags contain 2 muted cyan bags, 3 vibrant crimson bags.      </span></span>
+<span class='c'>#&gt; <span style='color: #555555;'>6</span><span> dull purple bags contain 1 striped fuchsia bag.</span></span></code></pre>
+
+</div>
+
+Our first task is to parse the natural language and split the rules into one container/contains pair per line:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>rules</span> <span class='o'>&lt;-</span> <span class='k'>bags</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(rule = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='k'>X1</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"container"</span>, <span class='s'>"contains"</span>), sep = <span class='s'>" bags contain "</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate_rows.html'>separate_rows</a></span>(<span class='k'>contains</span>, sep = <span class='s'>","</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(contains = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span>(<span class='k'>contains</span>, <span class='s'>"\\."</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(contains = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove</a></span>(<span class='k'>contains</span>, <span class='s'>"bags|bag"</span>)) <span class='o'>%&gt;%</span>
+  <span class='c'>#mutate(contains = str_replace(contains, "no other", "0 other")) %&gt;%</span>
+  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/extract.html'>extract</a></span>(<span class='k'>contains</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>'number'</span>, <span class='s'>'contains'</span>), <span class='s'>"(\\d+) (.+)"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='o'>!</span><span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='k'>number</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(contains = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span>(<span class='k'>contains</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(number = <span class='nf'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='k'>number</span>)) </code></pre>
+
+</div>
+
+To find all bags that con eventually contain our `shiny gold` bag, we first find the bags that can contain it directly. We then find the bags that can contain those bags and take the union of the two levels. We repeat, stopping when going up a level adds no further bags to the vector of bag colours already found. We then subtract 1, because we don't want to count the original shiny gold bag.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># function to find all colours that contain a vector of other colours:</span>
+<span class='k'>contains_colours</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>colours</span>) {
+  <span class='k'>rules</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>contains</span> <span class='o'>%in%</span> <span class='k'>colours</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span>(<span class='k'>container</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>container</span>)
+}
+
+<span class='k'>bags</span> <span class='o'>&lt;-</span> <span class='s'>"shiny gold"</span>
+<span class='k'>old_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>bags</span>)
+<span class='k'>new_length</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='c'># keeping adding to the vector of bags, until no change</span>
+<span class='kr'>while</span>(<span class='k'>old_length</span> != <span class='k'>new_length</span>) {
+  <span class='k'>old_length</span> <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>bags</span>)
+  <span class='k'>bags</span> <span class='o'>&lt;-</span> <span class='k'>base</span>::<span class='nf'><a href='https://rdrr.io/r/base/sets.html'>union</a></span>(<span class='k'>bags</span>, <span class='nf'>contains_colours</span>(<span class='k'>bags</span>)) <span class='o'>%&gt;%</span> <span class='nf'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>()
+  <span class='k'>new_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>bags</span>)
+  <span class='c'>#cat(old_length, ", ", new_length, "\n")</span>
+}
+
+<span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>bags</span>) <span class='o'>-</span> <span class='m'>1</span>
+<span class='c'>#&gt; [1] 274</span></code></pre>
+
+</div>
+
+#### Part 2: Number of bags
+
+Now we need to discover the number of bags that a shiny gold bag must contain. I figured that lends itself to recursion, but struggled on the details. Hat tip to David Robinson for [this solution](https://twitter.com/drob/status/1336003816395845632). I've learnt a lot for myself by unpicking how it works.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>count_all_contained</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>colour</span>) {
+  
+  <span class='k'>relevant_rules</span> <span class='o'>&lt;-</span> <span class='k'>rules</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>container</span> <span class='o'>%in%</span> <span class='k'>colour</span>)
+  
+  <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>relevant_rules</span><span class='o'>$</span><span class='k'>number</span> <span class='o'>*</span> (<span class='m'>1</span> <span class='o'>+</span> <span class='nf'>map_dbl</span>(<span class='k'>relevant_rules</span><span class='o'>$</span><span class='k'>contains</span>, <span class='k'>count_all_contained</span>)))
+  
+}
+
+<span class='nf'>count_all_contained</span>(<span class='s'>"shiny gold"</span>)
+<span class='c'>#&gt; [1] 158730</span></code></pre>
 
 </div>
 
