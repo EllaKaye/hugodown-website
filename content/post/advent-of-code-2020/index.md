@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: c23fc18476f92f27
+rmd_hash: 0af13bed7b60a71b
 
 ---
 
@@ -44,6 +44,9 @@ Each participant gets different input data, so my numerical solutions may be dif
 5.  <a href="#day5">Binary Boarding</a>
 6.  <a href="#day6">Custom Customs</a>
 7.  <a href="#day7">Handy Haverstocks</a>
+8.  <a href="#day8">Handheld Halting</a>
+9.  <a href="#day9">Encoding Error</a>
+10. <a href="#day10">Adapter Array</a>
 
 <p>
 <a id='day1'></a>
@@ -52,7 +55,7 @@ Each participant gets different input data, so my numerical solutions may be dif
 Day 1: [Report Repair](https://adventofcode.com/2020/day/1)
 -----------------------------------------------------------
 
-[My day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day1.txt)
+[My day 1 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day1.txt)
 
 #### Part 1: Two numbers
 
@@ -64,7 +67,7 @@ The challenge is to find two numbers from a list that sum to 2020, then to repor
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
 
-<span class='k'>expenses</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"AoC_day1.txt"</span>) <span class='o'>%&gt;%</span>
+<span class='k'>expenses</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"data/AoC_day1.txt"</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>()
 
 <span class='nf'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span>(<span class='k'>expenses</span>, <span class='k'>expenses</span>) <span class='o'>%&gt;%</span> 
@@ -100,7 +103,7 @@ The follow-up challenge is the same but with three numbers. I went with essentia
 Day 2: [Password Philosophy](https://adventofcode.com/2020/day/2)
 -----------------------------------------------------------------
 
-[My day 2 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day2.txt)
+[My day 2 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day2.txt)
 
 #### Part 1: Number of letters
 
@@ -124,7 +127,7 @@ First load the libraries we'll need. We then read in the data and use `tidyr` fu
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passwords</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"AoC_day2.txt"</span>, col_names = <span class='kc'>FALSE</span>) <span class='o'>%&gt;%</span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passwords</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"data/AoC_day2.txt"</span>, col_names = <span class='kc'>FALSE</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='k'>X1</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"policy"</span>, <span class='s'>"password"</span>), sep = <span class='s'>":"</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='k'>policy</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"count"</span>, <span class='s'>"letter"</span>), sep = <span class='s'>" "</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span>(<span class='k'>count</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"min"</span>, <span class='s'>"max"</span>)) <span class='o'>%&gt;%</span>
@@ -172,7 +175,7 @@ There were a couple of *gotchas* here. When I used [`separate()`](https://tidyr.
 Day 3: [Toboggan Trajectory](https://adventofcode.com/2020/day/3)
 -----------------------------------------------------------------
 
-[My day 3 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day3.txt)
+[My day 3 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day3.txt)
 
 #### Part 1: Encountering trees
 
@@ -184,7 +187,7 @@ First, read in the data and save it into a matrix. My method here feels really h
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
 
-<span class='k'>tree_map</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"AoC_day3.txt"</span>, col_names = <span class='kc'>FALSE</span>)
+<span class='k'>tree_map</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"data/AoC_day3.txt"</span>, col_names = <span class='kc'>FALSE</span>)
 
 <span class='k'>num_col</span> <span class='o'>&lt;-</span> <span class='k'>tree_map</span> <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(length = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_length.html'>str_length</a></span>(<span class='k'>X1</span>)) <span class='o'>%&gt;%</span>
@@ -278,7 +281,7 @@ We now need to check several other trajectories, and multiply together the numbe
 Day 4: [Passport Processing](https://adventofcode.com/2020/day/4)
 -----------------------------------------------------------------
 
-[My day 4 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day4.txt)
+[My day 4 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day4.txt)
 
 #### Part 1: Complete passports
 
@@ -293,7 +296,7 @@ Using [`readr::read_tsv()`](https://readr.tidyverse.org/reference/read_delim.htm
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passports</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"AoC_day4.txt"</span>) <span class='o'>%&gt;%</span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>passports</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"data/AoC_day4.txt"</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>() <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tidyr.tidyverse.org/reference/separate_rows.html'>separate_rows</a></span>(<span class='k'>value</span>, sep = <span class='s'>" "</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(new_passport = <span class='k'>value</span> <span class='o'>==</span> <span class='s'>""</span>) <span class='o'>%&gt;%</span>
@@ -379,7 +382,7 @@ Then we create a `check` column, which is `TRUE` when the value for each key mee
 Day 5: [Binary Boarding](https://adventofcode.com/2020/day/5)
 -------------------------------------------------------------
 
-[My day 5 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day5.txt)
+[My day 5 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day5.txt)
 
 #### Part 1: Finding all seat IDs
 
@@ -394,7 +397,7 @@ The code below sets starts by setting each row number to 127 and each column num
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>boarding</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"AoC_day5.txt"</span>, col_names = <span class='kc'>FALSE</span>) <span class='o'>%&gt;%</span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>boarding</span> <span class='o'>&lt;-</span> <span class='k'>readr</span>::<span class='nf'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='s'>"data/AoC_day5.txt"</span>, col_names = <span class='kc'>FALSE</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span>(binary = <span class='k'>X1</span>)
 
 <span class='k'>seat_IDs</span> <span class='o'>&lt;-</span> <span class='k'>boarding</span> <span class='o'>%&gt;%</span>
@@ -462,7 +465,7 @@ We need to find the missing number, so we arrange the IDs in ascending order and
 Day 6: [Custom Customs](https://adventofcode.com/2020/day/6)
 ------------------------------------------------------------
 
-[My day 6 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day6.txt)
+[My day 6 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day6.txt)
 
 #### Part 1: Anyone answers
 
@@ -478,7 +481,7 @@ Within each group, we need to find the number of unique letters within each grou
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>customs_groups</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"AoC_day6.txt"</span>) <span class='o'>%&gt;%</span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>customs_groups</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"data/AoC_day6.txt"</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>() <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(new_group = <span class='k'>value</span> <span class='o'>==</span> <span class='s'>""</span>) <span class='o'>%&gt;%</span>
   <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(group_ID = <span class='nf'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='k'>new_group</span>) <span class='o'>+</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
@@ -530,7 +533,7 @@ Now, instead of unique letters in a group, we need to find the number of letters
 Day 7: [Handy Haverstocks](https://adventofcode.com/2020/day/7)
 ---------------------------------------------------------------
 
-[My day 7 data](https://ellakaye.rbind.io/post/advent-of-code-2020/AoC_day7.txt)
+[My day 7 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day7.txt)
 
 #### Part 1: Number of colour bags
 
@@ -544,7 +547,7 @@ We have colour-coded bags that must contain a specific number of other colour-co
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>bags</span> <span class='o'>&lt;-</span> <span class='nf'>read_tsv</span>(<span class='s'>"AoC_day7.txt"</span>, col_names = <span class='kc'>FALSE</span>)
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>bags</span> <span class='o'>&lt;-</span> <span class='nf'>read_tsv</span>(<span class='s'>"data/AoC_day7.txt"</span>, col_names = <span class='kc'>FALSE</span>)
 
 <span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='k'>bags</span>)
 <span class='c'>#&gt; <span style='color: #555555;'># A tibble: 6 x 1</span></span>
@@ -623,6 +626,354 @@ Now we need to discover the number of bags that a shiny gold bag must contain. I
 
 <span class='nf'>count_all_contained</span>(<span class='s'>"shiny gold"</span>)
 <span class='c'>#&gt; [1] 158730</span></code></pre>
+
+</div>
+
+<p>
+<a id='day8'></a>
+</p>
+
+Day 8: [Handheld Halting](https://adventofcode.com/2020/day/8)
+--------------------------------------------------------------
+
+[My day 8 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day8.txt)
+
+#### Part 1: Infinite Loop
+
+Our programme gets stuck in an infinite loop. As well as keeping track of the accumulator, we need to keep track of where we've visited, and stop when we visit the same instruction twice. We use a [`data.frame()`](https://rdrr.io/r/base/data.frame.html) rather than a [`tibble()`](https://tibble.tidyverse.org/reference/tibble.html) as the former is easier to index into.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>instructions</span> <span class='o'>&lt;-</span> 
+  <span class='nf'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span>(<span class='s'>"data/AoC_day8.txt"</span>, col.names = <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"instruction"</span>, <span class='s'>"value"</span>))</code></pre>
+
+</div>
+
+We start with a pretty straight-forward loop, noting that at most it can run for one more than the number of instructions in the programme until it hits an instruction it's already visited. We update row number to visit next and the accumulator as appropriate.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>instructions</span><span class='o'>$</span><span class='k'>visited</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='k'>row</span> <span class='o'>&lt;-</span> <span class='m'>1</span>
+<span class='k'>accumulator</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='k'>num_rows</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>instructions</span>)
+
+<span class='kr'>for</span> (<span class='k'>i</span> <span class='kr'>in</span> <span class='m'>1</span><span class='o'>:</span>(<span class='k'>num_rows</span><span class='o'>+</span><span class='m'>1</span>)) {
+
+  <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] != <span class='m'>0</span>) <span class='kr'>break</span>
+  
+  <span class='c'># +1 on number of times the row is visited</span>
+  <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] <span class='o'>&lt;-</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] <span class='o'>+</span> <span class='m'>1</span>
+
+  <span class='c'># case when the instruction is "acc"</span>
+  <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"acc"</span>) {
+    <span class='k'>accumulator</span> <span class='o'>&lt;-</span> <span class='k'>accumulator</span> <span class='o'>+</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"value"</span>]
+    <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='m'>1</span>
+  }
+  
+  <span class='c'># case when the instruction is "jmp"</span>
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"jmp"</span>) {
+    <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"value"</span>]
+  }
+
+  <span class='c'># case when the instruction is "nop"</span>
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"nop"</span>) {
+    <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='m'>1</span>
+  }
+}
+  
+<span class='k'>accumulator</span>
+<span class='c'>#&gt; [1] 1915</span></code></pre>
+
+</div>
+
+#### Part 2: Fixing the programme
+
+To break the loop, one of the `nop` instructions in the programme should be a `jmp` or vice versa. The plan is to swap these out one by one and check if the programme completes. It's not a sophisticated approach, but it works fast enough (about a second).
+
+First we note that the broken instruction must be one that we visited in Part 1. Also, an instruction of `jmp` with a value of 0 will get us stuck in a one-line infinite loop, so we avoid that.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+
+<span class='k'>rows_to_check</span> <span class='o'>&lt;-</span> <span class='k'>instructions</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(row_id = <span class='nf'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>visited</span> != <span class='m'>0</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>instruction</span> != <span class='s'>"acc"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='o'>!</span>(<span class='k'>instruction</span> <span class='o'>==</span> <span class='s'>"nop"</span> <span class='o'>&amp;</span> <span class='k'>value</span> <span class='o'>==</span> <span class='m'>0</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>row_id</span>)</code></pre>
+
+</div>
+
+We have 93 instruction to check. We modify our code from Part 1 slightly, converting it into a function and returning a list with values `completes` and `accumulator`. `completes` is `FALSE` as soon as we visit a row twice and `TRUE` if the number of our next row to visit is greater than the number of rows in the programme.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>programme_completes</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>instructions</span>) {
+  
+  <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='m'>1L</span>
+  <span class='k'>accumulator</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+  
+  <span class='k'>num_rows</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>instructions</span>)
+  
+  <span class='kr'>for</span> (<span class='k'>i</span> <span class='kr'>in</span> <span class='m'>1</span><span class='o'>:</span>(<span class='k'>num_rows</span><span class='o'>+</span><span class='m'>1</span>)) {
+  
+    <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] != <span class='m'>0</span>) {
+      <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(completes = <span class='kc'>FALSE</span>, accumulator = <span class='k'>accumulator</span>)) 
+    }
+    
+    <span class='c'># +1 on number of times the row is visited</span>
+    <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] <span class='o'>&lt;-</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"visited"</span>] <span class='o'>+</span> <span class='m'>1</span>
+  
+    <span class='c'># case when the instruction is "acc"</span>
+    <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"acc"</span>) {
+      <span class='k'>accumulator</span> <span class='o'>&lt;-</span> <span class='k'>accumulator</span> <span class='o'>+</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"value"</span>]
+      <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='m'>1</span>
+    }
+  
+    <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"jmp"</span>) {
+      <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"value"</span>]
+    }
+  
+    <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='s'>"instruction"</span>] <span class='o'>==</span> <span class='s'>"nop"</span>) {
+      <span class='k'>row</span> <span class='o'>&lt;-</span> <span class='k'>row</span> <span class='o'>+</span> <span class='m'>1</span>
+    }
+  
+    <span class='kr'>if</span> (<span class='k'>row</span> <span class='o'>&gt;</span> <span class='k'>num_rows</span>) {
+      <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(completes = <span class='kc'>TRUE</span>, accumulator = <span class='k'>accumulator</span>)) 
+    }
+  }
+}  </code></pre>
+
+</div>
+
+We now loop over the rows we've identified to check, breaking the loop as soon as we find a programme that completes. Finally, we extract the accumulator value from the successful programme.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>instructions</span><span class='o'>$</span><span class='k'>visited</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='kr'>for</span> (<span class='k'>row</span> <span class='kr'>in</span> <span class='k'>rows_to_check</span>) {
+  
+  <span class='c'># modify one row of the instructions,</span>
+  <span class='c'># copying data frame so we don't have to modify it back</span>
+  <span class='k'>modified_instructions</span> <span class='o'>&lt;-</span> <span class='k'>instructions</span>
+  
+  <span class='nf'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='k'>instructions</span>[<span class='k'>row</span>, <span class='m'>1</span>] <span class='o'>==</span> <span class='s'>"jmp"</span>, 
+         <span class='k'>modified_instructions</span>[<span class='k'>row</span>, <span class='m'>1</span>] <span class='o'>&lt;-</span> <span class='s'>"nop"</span>, 
+         <span class='k'>modified_instructions</span>[<span class='k'>row</span>, <span class='m'>1</span>] <span class='o'>&lt;-</span> <span class='s'>"jmp"</span>) 
+  
+  <span class='c'># check if the modified programme completes</span>
+  <span class='k'>check_programme</span> <span class='o'>&lt;-</span> <span class='nf'>programme_completes</span>(<span class='k'>modified_instructions</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>check_programme</span><span class='o'>$</span><span class='k'>completes</span>) 
+    <span class='kr'>break</span>
+}
+
+<span class='k'>check_programme</span><span class='o'>$</span><span class='k'>accumulator</span>
+<span class='c'>#&gt; [1] 944</span></code></pre>
+
+</div>
+
+<p>
+<a id='day9'></a>
+</p>
+
+Day 9: [Encoding Error](https://adventofcode.com/2020/day/9)
+------------------------------------------------------------
+
+[My day 9 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day9.txt)
+
+#### Part 1: Weak Link
+
+We have to find the first number in the list which is *not* the sum of a pair of different numbers in the preceding 25 numbers.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>input</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/double.html'>as.double</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"data/AoC_day9.txt"</span>)) </code></pre>
+
+</div>
+
+There's a nice trick for finding the pair of numbers in a vector that sum to a target that was doing the rounds on twitter in response to the <a href="#day1">Day 1</a> challenge: [`intersect(input, 2020 - input)`](https://rdrr.io/pkg/generics/man/setops.html). For this challenge, we expand on that idea, writing it as a `check_sum` function. Where there's more than one pair, it won't say which pair together, and if the number that's half the target appears in the addends, it will only appear once in the output. However, for this challenge, we only need to know when there are *no* pairs that sum to the target, which will be the case when the length of the output is 0.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>check_sum</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>target</span>, <span class='k'>addends</span>) {
+  <span class='nf'><a href='https://rdrr.io/pkg/generics/man/setops.html'>intersect</a></span>(<span class='k'>addends</span>, <span class='k'>target</span><span class='o'>-</span><span class='k'>addends</span>)
+}</code></pre>
+
+</div>
+
+PICK UP HERE
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>find_invalid_num</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>vec</span>, <span class='k'>win</span> = <span class='m'>25</span>) {
+  
+  <span class='kr'>for</span> (<span class='k'>i</span> <span class='kr'>in</span> (<span class='k'>win</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span><span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>vec</span>)) {
+    <span class='k'>check</span> <span class='o'>&lt;-</span> <span class='nf'>check_sum</span>(<span class='k'>vec</span>[<span class='k'>i</span>], <span class='k'>vec</span>[(<span class='k'>i</span><span class='o'>-</span><span class='k'>win</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)])
+    
+    <span class='kr'>if</span> (<span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>check</span>) <span class='o'>==</span> <span class='m'>0</span>) <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='k'>vec</span>[<span class='k'>i</span>])
+  }
+  
+}
+
+<span class='nf'>find_invalid_num</span>(<span class='k'>input</span>)
+<span class='c'>#&gt; [1] 507622668</span></code></pre>
+
+</div>
+
+#### Part 2: Contiguous set
+
+Find a contiguous set in the list that sums to the invalid number from part 1, and add together the largest and smallest number in that range.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>target</span> <span class='o'>&lt;-</span> <span class='nf'>find_invalid_num</span>(<span class='k'>input</span>)
+
+<span class='k'>input_reduced</span> <span class='o'>&lt;-</span> <span class='k'>input</span>[<span class='m'>1</span><span class='o'>:</span>(<span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>input</span> <span class='o'>==</span> <span class='k'>target</span>)<span class='o'>-</span><span class='m'>1</span>)]
+
+
+<span class='k'>contiguous_sum</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>input</span>, <span class='k'>target</span>) {
+  
+  <span class='k'>len</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>input</span>)
+  
+  <span class='kr'>for</span> (<span class='k'>i</span> <span class='kr'>in</span> <span class='m'>1</span><span class='o'>:</span><span class='k'>len</span>) {
+    <span class='k'>a</span> <span class='o'>&lt;-</span> <span class='k'>purrr</span>::<span class='nf'><a href='https://purrr.tidyverse.org/reference/accumulate.html'>accumulate</a></span>(<span class='k'>input</span>[<span class='k'>i</span><span class='o'>:</span><span class='k'>len</span>], <span class='k'>sum</span>)
+    <span class='k'>b</span> <span class='o'>&lt;-</span> <span class='k'>a</span> <span class='o'>==</span> <span class='k'>target</span>
+    
+    <span class='kr'>if</span> (<span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>b</span>) <span class='o'>==</span> <span class='m'>1</span>) {
+      <span class='k'>output_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>b</span>)
+      
+      <span class='k'>contiguous_set</span> <span class='o'>&lt;-</span> <span class='k'>input</span>[<span class='k'>i</span><span class='o'>:</span>(<span class='k'>i</span> <span class='o'>+</span> <span class='k'>output_length</span> <span class='o'>-</span> <span class='m'>1</span>)]
+      
+      <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='k'>contiguous_set</span>)))
+    }
+  }
+}
+
+<span class='nf'>contiguous_sum</span>(<span class='k'>input_reduced</span>, <span class='k'>target</span>)
+<span class='c'>#&gt; [1] 76688505</span></code></pre>
+
+</div>
+
+<p>
+<a id='day10'></a>
+</p>
+
+Day 10: [Adapter Array](https://adventofcode.com/2020/day/10)
+-------------------------------------------------------------
+
+[My day 10 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day10.txt)
+
+#### Part 1: Adapter Distribution
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)</code></pre>
+
+</div>
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>adapters</span> <span class='o'>&lt;-</span> 
+  <span class='nf'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='s'>"data/AoC_day10.txt"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>()
+
+<span class='k'>adapter_diffs</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>adapters</span>, <span class='m'>0</span>, <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='k'>adapters</span>) <span class='o'>+</span> <span class='m'>3</span>) <span class='o'>%&gt;%</span> 
+  <span class='nf'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>() <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>()
+
+<span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>adapter_diffs</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='o'>*</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>adapter_diffs</span> <span class='o'>==</span> <span class='m'>3</span>)
+<span class='c'>#&gt; [1] 3034</span></code></pre>
+
+</div>
+
+#### Part 2: Adapter combinations
+
+Instead of building up sequences of adapters, we see what we can remove from the full list.
+
+First, we check the diffs: are they just 1 and 3 or are there any 2s?
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='k'>adapter_diffs</span>)
+<span class='c'>#&gt; adapter_diffs</span>
+<span class='c'>#&gt;  1  3 </span>
+<span class='c'>#&gt; 74 41</span></code></pre>
+
+</div>
+
+We can't remove an adapter if its difference with the previous adapter is 3, otherwise the difference between the adapters on either side of it will be too big.
+
+What about diffs of 1? It depends how many ones there are around it. We can check this using the [`rle()`](https://rdrr.io/r/base/rle.html) (run length encoding) function
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>runs</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/rle.html'>rle</a></span>(<span class='k'>adapter_diffs</span>)
+<span class='k'>runs</span>
+<span class='c'>#&gt; Run Length Encoding</span>
+<span class='c'>#&gt;   lengths: int [1:48] 3 2 4 2 4 2 4 1 4 2 ...</span>
+<span class='c'>#&gt;   values : num [1:48] 1 3 1 3 1 3 1 3 1 3 ...</span></code></pre>
+
+</div>
+
+What is the distribution of lengths of sequences of 1s?
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>runs_table</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='k'>runs</span><span class='o'>$</span><span class='k'>lengths</span>) 
+<span class='k'>runs_table</span>
+<span class='c'>#&gt; </span>
+<span class='c'>#&gt;  1  2  3  4 </span>
+<span class='c'>#&gt; 13 14 10 11</span></code></pre>
+
+</div>
+
+We have at most four diffs on 1 in a row.
+
+Example sequences really helped me figure out what's going on here:
+
+-   If the diff sequence is ..., 3, 1, 3,... (e.g. adapters 1, 4, 5, 8)
+    -   we can keep the sequence as is (1 option)
+    -   We cannot remove any adapters
+    -   **1 option in total**
+-   If the diff sequence is ..., 3, 1, 1, 3,... (e.g. adapters 1, 4, 5, 6, 9)
+    -   we can keep as is (1 option)
+    -   If removing one adapter, we can only remove the one with a difference of one on either side (e.g. the 5) (1 option)
+    -   we cannot remove two adapters
+    -   **2 options total**
+-   If the diff sequence is ..., 3, 1, 1, 1, 3,...(e.g. adapters 1, 4, 5, 6, 7, 10)
+    -   We can keep as is (1 option)
+    -   If removing one adapter, we cannot remove the adapter leading to the first diff of 1, but we could remove either of the next two (2 options) (e.g. the 5 or 6)
+    -   If removing two adapters, we can only remove the two leading to the second two diffs of 1 (e.g. the 5 and 6) (1 option)
+    -   We cannot remove three adapters
+    -   **4 options total**
+-   If the diff sequence is ..., 3, 1, 1, 1, 1, 3,... (e.g. adapters 1, 4, 5, 6, 7, 8, 11)
+    -   we can keep as is (1 option)
+    -   If removing one adapter, it can be any except the one leading to the first diff of 1 (e.g. 5, 6, 7) (3 options)
+    -   Similarly, there are three options for removing two adapters (e.g. any two of 5, 6, 7) (3 options)
+    -   We cannot remove three adapters
+    -   **7 options total**
+
+Now, we multiply each run of difference of 1s with the number of options we have for removing adapters, then take the product of those products.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>runs_df</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(lengths = <span class='k'>runs</span><span class='o'>$</span><span class='k'>lengths</span>, values = <span class='k'>runs</span><span class='o'>$</span><span class='k'>values</span>)
+
+<span class='k'>options</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(lengths = <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='m'>1</span>,<span class='m'>2</span>,<span class='m'>3</span>,<span class='m'>4</span>), options = <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='m'>1</span>,<span class='m'>2</span>,<span class='m'>4</span>,<span class='m'>7</span>))
+
+<span class='k'>runs_df</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>values</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='k'>options</span>, by = <span class='s'>"lengths"</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(prod_options = <span class='nf'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='k'>options</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>prod_options</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(scientific = <span class='kc'>FALSE</span>) 
+<span class='c'>#&gt; [1] "259172170858496"</span></code></pre>
 
 </div>
 
