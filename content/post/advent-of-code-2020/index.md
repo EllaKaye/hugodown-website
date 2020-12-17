@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 0af13bed7b60a71b
+rmd_hash: 6aaa623d8c20b95b
 
 ---
 
@@ -797,7 +797,7 @@ We have to find the first number in the list which is *not* the sum of a pair of
 
 </div>
 
-There's a nice trick for finding the pair of numbers in a vector that sum to a target that was doing the rounds on twitter in response to the <a href="#day1">Day 1</a> challenge: [`intersect(input, 2020 - input)`](https://rdrr.io/pkg/generics/man/setops.html). For this challenge, we expand on that idea, writing it as a `check_sum` function. Where there's more than one pair, it won't say which pair together, and if the number that's half the target appears in the addends, it will only appear once in the output. However, for this challenge, we only need to know when there are *no* pairs that sum to the target, which will be the case when the length of the output is 0.
+There's a nice trick for finding the pair of numbers in a vector that sum to a target that was doing the rounds on twitter in response to the <a href="#day1">Day 1</a> challenge: [`intersect(input, 2020 - input)`](https://rdrr.io/pkg/generics/man/setops.html). For this challenge, we expand on that idea, writing it as a `check_sum` function. Where there's more than one pair, it won't say which pair together, and if the number that's half the target appears in the addends, it will only appear once in the output. However, for this challenge, we only need to know when there are *no* pairs that sum to the target, which will be the case when the length of the output of `check_sum` is 0.
 
 <div class="highlight">
 
@@ -807,7 +807,7 @@ There's a nice trick for finding the pair of numbers in a vector that sum to a t
 
 </div>
 
-PICK UP HERE
+Then, it's simply a case of iterating over windows of length 25, checking whether the following number is the sum of a distinct pair in that window, and returning the first one that isn't.
 
 <div class="highlight">
 
@@ -828,16 +828,23 @@ PICK UP HERE
 
 #### Part 2: Contiguous set
 
-Find a contiguous set in the list that sums to the invalid number from part 1, and add together the largest and smallest number in that range.
+Find a contiguous set in the list that sums to the invalid number from Part 1, and add together the largest and smallest number in that range.
+
+First, we note that after a certain point, all numbers in the input are larger than the target, so we don't need to consider those. We reduce our input vector accordingly.
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>target</span> <span class='o'>&lt;-</span> <span class='nf'>find_invalid_num</span>(<span class='k'>input</span>)
 
-<span class='k'>input_reduced</span> <span class='o'>&lt;-</span> <span class='k'>input</span>[<span class='m'>1</span><span class='o'>:</span>(<span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>input</span> <span class='o'>==</span> <span class='k'>target</span>)<span class='o'>-</span><span class='m'>1</span>)]
+<span class='k'>input_reduced</span> <span class='o'>&lt;-</span> <span class='k'>input</span>[<span class='m'>1</span><span class='o'>:</span>(<span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>input</span> <span class='o'>&lt;=</span> <span class='k'>target</span>)))]</code></pre>
 
+</div>
 
-<span class='k'>contiguous_sum</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>input</span>, <span class='k'>target</span>) {
+To find the contiguous set in the list that sums to the target, we make use of `accumulate()` from the `purrr` package. Let the input list be $x = (x_1, x_2,..., x_n)$. Then `accumulate(x, sum)` returns $a = (x_1, x_1 + x_2,..., \sum_{j=1}^n x_j)$. We check whether any element of this vector is equal to the target. If so we index into the input vector appropriately, sum the min and max in the range and we're done. If not, we consider the sums of all windows starting with the second element of the input list, and so on.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>contiguous_sum</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>input</span>, <span class='k'>target</span>) {
   
   <span class='k'>len</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='k'>input</span>)
   
@@ -860,6 +867,8 @@ Find a contiguous set in the list that sums to the invalid number from part 1, a
 
 </div>
 
+I appreciate that there's some redundant calculation in this method. The vectors of accumulated sums can contain numbers larger than the target (if writing our own loop, we could break as soon as the accumulated sum got too big). Also, in retrospect, we could have only run `accumulate` once, then in the second iteration of the loop, subtracted `input[1]` from the result, in the third iteration subtracted `input[2]` from that result, etc. However, the function as written is concise and easy to understand, and gets our answer in around a second, so that will do!
+
 <p>
 <a id='day10'></a>
 </p>
@@ -870,6 +879,8 @@ Day 10: [Adapter Array](https://adventofcode.com/2020/day/10)
 [My day 10 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day10.txt)
 
 #### Part 1: Adapter Distribution
+
+This is simply a case of ordering the adapters, prepending 0 and appending the the max in the list plus three, then finding the differences.
 
 <div class="highlight">
 
@@ -933,33 +944,33 @@ What is the distribution of lengths of sequences of 1s?
 
 </div>
 
-We have at most four diffs on 1 in a row.
+We have at most four diffs of 1 in a row.
 
-Example sequences really helped me figure out what's going on here:
+We need to check that if we remove an adapter, the new differences do not exceed 3. Example sequences really helped me figure out what's going on here:
 
 -   If the diff sequence is ..., 3, 1, 3,... (e.g. adapters 1, 4, 5, 8)
-    -   we can keep the sequence as is (1 option)
+    -   1 option to keep as is
     -   We cannot remove any adapters
     -   **1 option in total**
 -   If the diff sequence is ..., 3, 1, 1, 3,... (e.g. adapters 1, 4, 5, 6, 9)
-    -   we can keep as is (1 option)
-    -   If removing one adapter, we can only remove the one with a difference of one on either side (e.g. the 5) (1 option)
+    -   1 option to keep as is
+    -   1 option to remove one adapter (e.g. the 5)
     -   we cannot remove two adapters
     -   **2 options total**
--   If the diff sequence is ..., 3, 1, 1, 1, 3,...(e.g. adapters 1, 4, 5, 6, 7, 10)
-    -   We can keep as is (1 option)
-    -   If removing one adapter, we cannot remove the adapter leading to the first diff of 1, but we could remove either of the next two (2 options) (e.g. the 5 or 6)
-    -   If removing two adapters, we can only remove the two leading to the second two diffs of 1 (e.g. the 5 and 6) (1 option)
+-   If the diff sequence is ..., 3, 1, 1, 1, 3,... (e.g. adapters 1, 4, 5, 6, 7, 10)
+    -   1 option to keep as is
+    -   2 options to remove one adapter (e.g. the 5 or 6)
+    -   1 options to remove two adapters (e.g. the 5 and 6)
     -   We cannot remove three adapters
     -   **4 options total**
 -   If the diff sequence is ..., 3, 1, 1, 1, 1, 3,... (e.g. adapters 1, 4, 5, 6, 7, 8, 11)
-    -   we can keep as is (1 option)
-    -   If removing one adapter, it can be any except the one leading to the first diff of 1 (e.g. 5, 6, 7) (3 options)
-    -   Similarly, there are three options for removing two adapters (e.g. any two of 5, 6, 7) (3 options)
+    -   1 option to keep as is
+    -   3 options to remove one adapter (e.g. 5, 6, or 7)
+    -   3 options to remove two adapters (e.g. any two of 5, 6, and 7)
     -   We cannot remove three adapters
     -   **7 options total**
 
-Now, we multiply each run of difference of 1s with the number of options we have for removing adapters, then take the product of those products.
+Finally, we multiply each run length of difference of 1s with the number of options we have for removing adapters, then take the product of those products.
 
 <div class="highlight">
 
