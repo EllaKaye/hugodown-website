@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 6aaa623d8c20b95b
+rmd_hash: 6f696410d260d961
 
 ---
 
@@ -47,6 +47,7 @@ Each participant gets different input data, so my numerical solutions may be dif
 8.  <a href="#day8">Handheld Halting</a>
 9.  <a href="#day9">Encoding Error</a>
 10. <a href="#day10">Adapter Array</a>
+11. <a href="#day11">Seating System</a>
 
 <p>
 <a id='day1'></a>
@@ -987,6 +988,320 @@ Finally, we multiply each run length of difference of 1s with the number of opti
 <span class='c'>#&gt; [1] "259172170858496"</span></code></pre>
 
 </div>
+
+<p>
+<a id='day11'></a>
+</p>
+
+Day 11: [Seating System](https://adventofcode.com/2020/day/11)
+--------------------------------------------------------------
+
+[My day 11 data](https://ellakaye.rbind.io/post/advent-of-code-2020/data/AoC_day11.txt)
+
+#### Part 1: Changing layout
+
+My code for Day 11 runs a little slow (about 10 seconds for Part 1 and 80 seconds for Part 2), so for the sake of being able to rebuild this page quickly as I keep updating it working through the challenges, I will demonstrate this code with the test input provided as an example.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='http://stringr.tidyverse.org'>stringr</a></span>)
+<span class='nf'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='k'><a href='https://tidyr.tidyverse.org'>tidyr</a></span>)</code></pre>
+
+</div>
+
+First we read in the data and convert it to a matrix (using the [`datapasta`](https://github.com/MilesMcBain/datapasta) package for the test input):
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># layout &lt;- readr::read_tsv("data/AoC_day11.txt", col_names = FALSE)</span>
+
+<span class='k'>layout</span> <span class='o'>&lt;-</span> <span class='k'>tibble</span>::<span class='nf'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span>(
+  <span class='o'>~</span><span class='k'>X1</span>,
+  <span class='s'>"L.LL.LL.LL"</span>,
+  <span class='s'>"LLLLLLL.LL"</span>,
+  <span class='s'>"L.L.L..L.."</span>,
+  <span class='s'>"LLLL.LL.LL"</span>,
+  <span class='s'>"L.LL.LL.LL"</span>,
+  <span class='s'>"L.LLLLL.LL"</span>,
+  <span class='s'>"..L.L....."</span>,
+  <span class='s'>"LLLLLLLLLL"</span>,
+  <span class='s'>"L.LLLLLL.L"</span>,
+  <span class='s'>"L.LLLLL.LL"</span>
+  )</code></pre>
+
+</div>
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># get number of columns for matrix</span>
+<span class='k'>num_col</span> <span class='o'>&lt;-</span> <span class='k'>layout</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(length = <span class='nf'><a href='https://stringr.tidyverse.org/reference/str_length.html'>str_length</a></span>(<span class='k'>X1</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='m'>1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>length</span>)
+
+<span class='c'># split layout into characters and turn to vector</span>
+<span class='k'>layout_vec</span> <span class='o'>&lt;-</span> <span class='k'>layout</span> <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(X1 = <span class='nf'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='k'>X1</span>, split = <span class='nf'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='m'>0</span>), fixed = <span class='kc'>TRUE</span>)) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='k'>X1</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>()
+
+<span class='c'># organise into matrix</span>
+<span class='k'>initial_layout</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='k'>layout_vec</span>, ncol = <span class='k'>num_col</span>, byrow = <span class='kc'>TRUE</span>)</code></pre>
+
+</div>
+
+Next, we write a helper function that, given a matrix and row and column indices, returns a vector of the adjacent seats. We need to take care when indexing into the matrix, so we treat all corner and edge cases separately. Fiddly, but gets the job done.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>get_adj</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>mat</span>, <span class='k'>i</span>,<span class='k'>j</span>) {
+  
+  <span class='k'>nr</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>mat</span>)
+  <span class='k'>nc</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='k'>mat</span>)
+  
+  <span class='c'># corner cases</span>
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span> <span class='o'>&amp;</span> <span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='m'>1</span>,<span class='m'>2</span>], <span class='k'>mat</span>[<span class='m'>2</span>,<span class='m'>1</span><span class='o'>:</span><span class='m'>2</span>])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span> <span class='o'>&amp;</span> <span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='m'>1</span>,(<span class='k'>nc</span><span class='o'>-</span><span class='m'>1</span>)], <span class='k'>mat</span>[<span class='m'>2</span>,(<span class='k'>nc</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span><span class='k'>nc</span>])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span> <span class='o'>&amp;</span> <span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='k'>nr</span>,<span class='m'>2</span>], <span class='k'>mat</span>[<span class='k'>nr</span><span class='o'>-</span><span class='m'>1</span>,<span class='m'>1</span><span class='o'>:</span><span class='m'>2</span>])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span> <span class='o'>&amp;</span> <span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='k'>nr</span><span class='o'>-</span><span class='m'>1</span>, (<span class='k'>nc</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span><span class='k'>nc</span>], <span class='k'>mat</span>[<span class='k'>nr</span>, <span class='k'>nc</span><span class='o'>-</span><span class='m'>1</span>])}  
+  
+  <span class='c'># edge cases</span>
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='m'>1</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>,<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)], <span class='k'>mat</span>[<span class='m'>2</span>, (<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='k'>nr</span>, <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>,<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)], <span class='k'>mat</span>[<span class='k'>nr</span><span class='o'>-</span><span class='m'>1</span>, (<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>, <span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>), <span class='m'>1</span>], <span class='k'>mat</span>[(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>), <span class='m'>2</span>])}
+  <span class='kr'>else</span> <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>, <span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>), <span class='k'>nc</span>], <span class='k'>mat</span>[(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>), <span class='k'>nc</span><span class='o'>-</span><span class='m'>1</span>])}
+  
+  <span class='c'># inside cases</span>
+  <span class='kr'>else</span> {<span class='k'>adj</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>mat</span>[<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>,(<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)], <span class='k'>mat</span>[<span class='k'>i</span>,<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>,<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)], <span class='k'>mat</span>[<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>,(<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)])}
+  
+  <span class='k'>adj</span>
+}</code></pre>
+
+</div>
+
+Once we have a vector of surrounding seats, we can apply the rules in the problem to determine whether a given seat needs to change state. The `needs_changing` helper function does that. It's overkill at this point to give options to specify the function for finding the vector of seats to check, and the maximum number of occupied seats people can tolerate around them, but (spolier alert) I put in these options when working on the challenge in Part 2.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>needs_changing</span> <span class='o'>&lt;-</span> 
+  <span class='nf'>function</span>(<span class='k'>mat</span>, <span class='k'>i</span>,<span class='k'>j</span>, <span class='k'>get_surround</span> = <span class='k'>get_adj</span>, <span class='k'>max_occupied</span> = <span class='m'>4</span>) {
+  
+  <span class='k'>surround</span> <span class='o'>&lt;-</span> <span class='nf'>get_surround</span>(<span class='k'>mat</span>, <span class='k'>i</span>,<span class='k'>j</span>)
+  <span class='k'>n_occupied</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>surround</span> <span class='o'>==</span> <span class='s'>"#"</span>)
+  
+  <span class='kr'>if</span> ((<span class='k'>mat</span>[<span class='k'>i</span>,<span class='k'>j</span>] <span class='o'>==</span> <span class='s'>"L"</span>) <span class='o'>&amp;</span> (<span class='k'>n_occupied</span> <span class='o'>==</span> <span class='m'>0</span>)) <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kc'>TRUE</span>)
+  
+  <span class='kr'>else</span> <span class='kr'>if</span> ((<span class='k'>mat</span>[<span class='k'>i</span>,<span class='k'>j</span>] <span class='o'>==</span> <span class='s'>"#"</span>) <span class='o'>&amp;</span> (<span class='k'>n_occupied</span> <span class='o'>&gt;=</span> <span class='k'>max_occupied</span>)) {
+    <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kc'>TRUE</span>)
+  }
+  
+  <span class='kr'>else</span> <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kc'>FALSE</span>)
+}</code></pre>
+
+</div>
+
+Since floor spaces don't change, we only need to consider seats. We save the indices of the seats into a data frame, so we can vectorise over it using `tidyverse` functions. However, when we've determined the seats that need changing, using our `needs_changing` function, we need to convert those indices from a data.frame into a matrix, in order to index into the layout matrix appropriately and make the changes.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>seats</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>initial_layout</span> != <span class='s'>"."</span>, arr.ind = <span class='kc'>TRUE</span>)
+
+<span class='k'>seats_df</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='k'>seats</span>) <span class='o'>%&gt;%</span>
+  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span>(i = <span class='k'>row</span>, 
+         j = <span class='k'>col</span>)</code></pre>
+
+</div>
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>layout</span> <span class='o'>&lt;-</span> <span class='k'>initial_layout</span>
+<span class='k'>iters</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='c'># loop until there are no further changes</span>
+<span class='kr'>repeat</span> {
+  
+  <span class='k'>change</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+  
+  <span class='k'>seats_to_change</span> <span class='o'>&lt;-</span> 
+    <span class='k'>seats_df</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span>() <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(change_seat = <span class='nf'>needs_changing</span>(<span class='k'>layout</span>,<span class='k'>i</span>,<span class='k'>j</span>))   
+  
+  <span class='k'>change</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>seats_to_change</span><span class='o'>$</span><span class='k'>change_seat</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>change</span> <span class='o'>==</span> <span class='m'>0</span>) <span class='kr'>break</span>
+  
+  <span class='k'>indices_to_change</span> <span class='o'>&lt;-</span> 
+    <span class='k'>seats_to_change</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>change_seat</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='k'>i</span>,<span class='k'>j</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()  
+
+  <span class='k'>layout</span>[<span class='k'>indices_to_change</span>] <span class='o'>&lt;-</span> 
+    <span class='nf'><a href='https://rdrr.io/pkg/generics/man/setops.html'>setdiff</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"L"</span>, <span class='s'>"#"</span>),  <span class='k'>layout</span>[<span class='k'>indices_to_change</span>])
+  
+  <span class='k'>iters</span> <span class='o'>&lt;-</span> <span class='k'>iters</span> <span class='o'>+</span> <span class='m'>1</span>
+}
+
+<span class='k'>part_1_iters</span> <span class='o'>&lt;-</span> <span class='k'>iters</span>
+<span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>layout</span><span class='o'>==</span> <span class='s'>"#"</span>)
+<span class='c'>#&gt; [1] 37</span></code></pre>
+
+</div>
+
+On the test set, this takes 5 iterations. On the full data set, my answer is 2316, and it took 107 iterations.
+
+#### Part 2: Looking further
+
+Now, people look to the first seat they can see in each direction, and will change from occupied to unoccupied if five or more of them are occupied.
+
+The plan is to write a function that extracts full vectors from a given seat to the edge of the layout matrix in each of the eight directions, then finds the first seat in each of those directions, and finally collects those into a vector of the seats under consideration when determining if a change is needed. Then I can reuse the loop from Part 1, just changing the arguments in the calls to `needs_changing`.
+
+Here's a helper function to get the first seat in a vector looking in one direction:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>get_first_seat_from_vec</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>vec</span>) {
+  
+  <span class='kr'>if</span> (<span class='nf'><a href='https://rdrr.io/r/base/any.html'>any</a></span>(<span class='k'>vec</span> <span class='o'>%in%</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"#"</span>, <span class='s'>"L"</span>))) {
+    <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='k'>vec</span>[<span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='k'>vec</span> != <span class='s'>"."</span>))])
+  }
+  
+  <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='m'>NA</span>)
+}</code></pre>
+
+</div>
+
+Now, if I thought getting adjacent seats to a given seat in Part 1 was fiddly, it's nothing on getting a vector from a given seat to the edge of the matrix. There are many cases to consider to make we we don't go out of bounds. In the diagonal directions, first we get a matrix of the indices of the matrix we need, then subset into the matrix accordingly.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># takes a layout matrix (elements ".", "#", "L")</span>
+<span class='c'># returns vector with first "L" or "#" encountered in each direction</span>
+<span class='k'>get_first_seat</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>mat</span>, <span class='k'>i</span>,<span class='k'>j</span>) {
+  
+  <span class='k'>nr</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='k'>mat</span>)
+  <span class='k'>nc</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='k'>mat</span>)
+  
+  <span class='c'># North</span>
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='k'>N</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>&gt;</span> <span class='m'>1</span>) <span class='k'>N</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[(<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span><span class='m'>1</span>,<span class='k'>j</span>]
+  
+  <span class='c'># South</span>
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span>) <span class='k'>S</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>&lt;</span> <span class='k'>nr</span>) <span class='k'>S</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[(<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span><span class='k'>nr</span>,<span class='k'>j</span>]
+  
+  <span class='c'># East</span>
+  <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) <span class='k'>E</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>&lt;</span> <span class='k'>nc</span>) <span class='k'>E</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>i</span>, (<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span><span class='k'>nc</span>]
+  
+  <span class='c'># West</span>
+  <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='k'>W</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>if</span> (<span class='k'>j</span> <span class='o'>&gt;</span> <span class='m'>1</span>) <span class='k'>W</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>i</span>, (<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span><span class='m'>1</span>]
+  
+  <span class='c'># how far in each direction to edge of matrix</span>
+  <span class='k'>to_N</span> <span class='o'>&lt;-</span> <span class='k'>i</span> <span class='o'>-</span> <span class='m'>1</span>
+  <span class='k'>to_S</span> <span class='o'>&lt;-</span> <span class='k'>nr</span> <span class='o'>-</span> <span class='k'>i</span>
+  <span class='k'>to_E</span> <span class='o'>&lt;-</span> <span class='k'>nc</span> <span class='o'>-</span> <span class='k'>j</span>
+  <span class='k'>to_W</span> <span class='o'>&lt;-</span> <span class='k'>j</span> <span class='o'>-</span> <span class='m'>1</span>
+  
+  <span class='c'># North-West</span>
+  <span class='k'>NW_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='k'>to_N</span>, <span class='k'>to_W</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span> <span class='o'>|</span> <span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='k'>NW</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>else</span> {
+    <span class='k'>mat_index</span> <span class='o'>&lt;-</span> 
+      <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>((<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>-</span><span class='k'>NW_length</span>), (<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>-</span><span class='k'>NW_length</span>)), ncol = <span class='m'>2</span>)
+    <span class='k'>NW</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>mat_index</span>]
+  }
+  
+  <span class='c'># North-East</span>
+  <span class='k'>NE_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='k'>to_N</span>, <span class='k'>to_E</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='m'>1</span> <span class='o'>|</span> <span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) <span class='k'>NE</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>else</span> {
+    <span class='k'>mat_index</span> <span class='o'>&lt;-</span> 
+      <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>((<span class='k'>i</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>-</span><span class='k'>NE_length</span>), (<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='k'>NE_length</span>)), ncol = <span class='m'>2</span>)
+    <span class='k'>NE</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>mat_index</span>]
+  }
+  
+  <span class='c'># South-East</span>
+  <span class='k'>SE_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='k'>to_S</span>, <span class='k'>to_E</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span> <span class='o'>|</span> <span class='k'>j</span> <span class='o'>==</span> <span class='k'>nc</span>) <span class='k'>SE</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>else</span> {
+    <span class='k'>mat_index</span> <span class='o'>&lt;-</span> 
+      <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>((<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>+</span><span class='k'>SE_length</span>), (<span class='k'>j</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>+</span><span class='k'>SE_length</span>)), ncol = <span class='m'>2</span>)
+    <span class='k'>SE</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>mat_index</span>]
+  }
+  
+  <span class='c'># South-West</span>
+  <span class='k'>SW_length</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='k'>to_S</span>, <span class='k'>to_W</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>i</span> <span class='o'>==</span> <span class='k'>nr</span> <span class='o'>|</span> <span class='k'>j</span> <span class='o'>==</span> <span class='m'>1</span>) <span class='k'>SW</span> <span class='o'>&lt;-</span> <span class='m'>NA</span>
+  <span class='kr'>else</span> {
+    <span class='k'>mat_index</span> <span class='o'>&lt;-</span> 
+      <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>((<span class='k'>i</span><span class='o'>+</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>i</span><span class='o'>+</span><span class='k'>SW_length</span>), (<span class='k'>j</span><span class='o'>-</span><span class='m'>1</span>)<span class='o'>:</span>(<span class='k'>j</span><span class='o'>-</span><span class='k'>SW_length</span>)), ncol = <span class='m'>2</span>)
+    <span class='k'>SW</span> <span class='o'>&lt;-</span> <span class='k'>mat</span>[<span class='k'>mat_index</span>]
+  }
+
+  <span class='c'># vectors from mat[i,j] to the edge in each direction </span>
+  <span class='k'>all_vecs</span> <span class='o'>&lt;-</span> 
+    (<span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(N = <span class='k'>N</span>, S = <span class='k'>S</span>, E = <span class='k'>E</span>, W = <span class='k'>W</span>, NW = <span class='k'>NW</span>, NE = <span class='k'>NE</span>, SE = <span class='k'>SE</span>, SW = <span class='k'>SW</span>))
+  
+  <span class='c'># the first seat in each direction, collapsed to a vector</span>
+  <span class='k'>first_seats</span> <span class='o'>&lt;-</span> <span class='k'>purrr</span>::<span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span>(<span class='k'>all_vecs</span>, <span class='k'>get_first_seat_from_vec</span>)
+  
+  <span class='c'># remove NAs from list and return</span>
+  <span class='c'># (these occur either when starting on an edge, </span>
+  <span class='c'># or when there are no seats in a given direction)</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='k'>first_seats</span>[<span class='o'>!</span><span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='k'>first_seats</span>)])
+
+}</code></pre>
+
+</div>
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>layout</span> <span class='o'>&lt;-</span> <span class='k'>initial_layout</span>
+<span class='k'>iters</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+
+<span class='c'># loop until there are no further changes</span>
+<span class='kr'>repeat</span> {
+  
+  <span class='k'>change</span> <span class='o'>&lt;-</span> <span class='m'>0</span>
+  
+  <span class='k'>seats_to_change</span> <span class='o'>&lt;-</span> 
+    <span class='k'>seats_df</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span>() <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(change_seat = <span class='nf'>needs_changing</span>(<span class='k'>layout</span>,<span class='k'>i</span>,<span class='k'>j</span>, <span class='k'>get_first_seat</span>, <span class='m'>5</span>))   
+  
+  <span class='k'>change</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>seats_to_change</span><span class='o'>$</span><span class='k'>change_seat</span>)
+  
+  <span class='kr'>if</span> (<span class='k'>change</span> <span class='o'>==</span> <span class='m'>0</span>) <span class='kr'>break</span>
+  
+  <span class='k'>indices_to_change</span> <span class='o'>&lt;-</span> 
+    <span class='k'>seats_to_change</span> <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='k'>change_seat</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='k'>i</span>,<span class='k'>j</span>) <span class='o'>%&gt;%</span>
+    <span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()  
+
+  <span class='k'>layout</span>[<span class='k'>indices_to_change</span>] <span class='o'>&lt;-</span> 
+    <span class='nf'><a href='https://rdrr.io/pkg/generics/man/setops.html'>setdiff</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='s'>"L"</span>, <span class='s'>"#"</span>),  <span class='k'>layout</span>[<span class='k'>indices_to_change</span>])
+  
+  <span class='k'>iters</span> <span class='o'>&lt;-</span> <span class='k'>iters</span> <span class='o'>+</span> <span class='m'>1</span>
+}
+
+<span class='k'>part_2_iters</span> <span class='o'>&lt;-</span> <span class='k'>iters</span>
+<span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='k'>layout</span><span class='o'>==</span> <span class='s'>"#"</span>)
+<span class='c'>#&gt; [1] 26</span></code></pre>
+
+</div>
+
+On the test set, this takes 6 iterations. On the full data set, my answer is 2128, and it took 87 iterations. Given this is fewer iterations than in Part 1, it must be my code for getting the first seat that's slowing things down.
+
+I am unsatisfied both by how many lines of code this has taken as well as the time taken to run. The introduction to Advent of Code says that each challenge has a solution that will complete in at most 15 seconds on ten year old hardware. So clearly there's a better way of doing this. Perhaps something to revisit in the future.
 
 Next
 ----
